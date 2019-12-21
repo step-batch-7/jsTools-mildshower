@@ -1,0 +1,47 @@
+SORT FLOW:
+
+Features:
+1.  node sort.js file 
+2.  node sort.js file1 file2
+3.  node sort.js
+4.  cat file | node sort.js
+
+5.  node sort.js -r file 
+6.  node sort.js -r file1 file2
+7.  node sort.js -r
+8.  cat file | node sort.js -r
+
+9.  node sort.js -f file 
+10. node sort.js -f file1 file2
+11. node sort.js -f
+12. cat file | node sort.js -f
+
+13. node sort.js -u file 
+14. node sort.js -u file1 file2
+15. node sort.js -u
+16. cat file | node sort.js -u
+
+17. node sort.js -n file 
+18. node sort.js -n file1 file2
+19. node sort.js -n
+20. cat file | node sort.js -n
+
+21. node sort.js -R file 
+22. node sort.js -R file1 file2
+23. node sort.js -R
+24. cat file | node sort.js -R
+
+25. node sort.js -c file 
+26. node sort.js -c file1 file2
+27. node sort.js -c
+28. cat file | node sort.js -c
+
+
+
+
+
+
+
+//11. node sort.js -k 2 file
+//12. node sort.js -s -k 2 file
+//13. node sort.js -k 2 -t " " file

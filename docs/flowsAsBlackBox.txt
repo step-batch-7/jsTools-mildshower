@@ -1,0 +1,175 @@
+                 CONSIDERED FLOWS FOR SORT
+
+file1: 
+		B
+		b
+		z
+		7
+		Z
+
+file2:
+		A
+		a
+		a
+		c
+		z
+		0
+
+file3:
+		a
+		6
+		98
+		-9
+		2c
+
+file4:
+		a b
+		c U
+		9 w
+		p 1
+		0 64
+		88 88
+		21 88
+
+
+1. With single File
+INPUT: node sort.js file1 
+OUTPUT: 
+	7
+	B
+	Z
+	b
+	z
+
+
+2. With multiple file
+INPUT: node sort.js file1 file2
+OUTPUT:
+	0
+	7
+	A
+	B
+	Z
+	a
+	a
+	b
+	c
+	z
+	z
+
+
+3. Stdin
+INPUT: node sort.js
+			 A
+			 6
+			 a
+			 z
+			 ^D
+OUTPUT:
+	6
+	A
+	a
+	z
+
+
+4. Pipe
+INPUT: cat file1 | node sort.js
+OUTPUT:
+	7
+	B
+	Z
+	b
+	z
+
+
+5. Reverse Sort
+INPUT: node sort.js -r file1
+OUTPUT: 
+	z
+	b
+	Z
+	B
+	7
+
+
+6. Ignore-Case
+INPUT: node sort.js -f file1
+OUTPUT:
+	7
+	B
+	b
+	Z
+	z
+
+
+7. Unique-Elements
+INPUT: node sort.js -u file2
+OUTPUT:
+	0
+	A
+	a
+	c
+	z
+
+
+8. Check
+INPUT: node sort.js -c file2
+OUTPUT:
+	sort: file2:6: disorder: 0
+
+
+9. Numeric
+INPUT: node sort.js -n file3
+OUTPUT:
+	-9
+	a
+	2c
+	6
+	98
+
+
+10. Random
+INPUT: node sort.js -R file1
+OUTPUT:
+	Z
+	B
+	z
+	7
+	b
+(NOTE: It's totally random. So, every time it will produce result with different order)
+
+
+11. Specific Field sort
+INPUT: node sort.js -k 2 file4
+OUTPUT:
+	p 1
+	0 6
+	21 88
+	88 88
+	c U
+	a b
+	9 w
+
+
+12. Stable sort
+INPUT: node sort.js -s -k 2 file4
+OUTPUT:
+p 1
+	0 6
+	88 88
+	21 88
+	c U
+	a b
+	9 w
+
+
+13. Field separator
+INPUT: node sort.js -k 2 -t " " file4
+OUTPUT:
+	p 1
+	0 6
+	21 88
+	88 88
+	c U
+	a b
+	9 w
