@@ -1,6 +1,7 @@
 .DS_Store
 docs/.DS_Store
 docs/sortFlow.drawio
+docs/sortExploration.xmind
 .nyc_output
 node_modules
 coverage
