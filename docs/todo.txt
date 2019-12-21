@@ -1,0 +1,14 @@
+sort.js
+
+v-0.1
+	node sort.js file 
+
+		directories: src, test, appTests
+		files: sort.js, package.json, appTestCode, sortLib.js
+		link: mainFile-libFile
+		inserting node-modules, .nyc-output, coverage to .gitignore
+		implement: 
+			sort()
+			getFileContent()
+			areAllFilesValid()
+			parse()
