@@ -1,3 +1,6 @@
 .DS_Store
 docs/.DS_Store
 docs/sortFlow.drawio
+.nyc_output
+node_modules
+coverage
