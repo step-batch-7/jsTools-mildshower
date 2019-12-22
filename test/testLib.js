@@ -2,22 +2,18 @@ const { assert } = require("chai");
 const { handleOutput, sort } = require("../src/sortLib");
 
 describe("#handleOutput()", function() {
-  it("should join given lines and give the string to logger if optFile option is false", function() {
+  it("should join given lines and give the string to logger", function() {
     const loggerMock = function(arg) {
       assert.strictEqual(arg, "line1\nline2\nline3");
     };
-    handleOutput(
-      ["line1", "line2", "line3"],
-      { optFileGiven: false },
-      loggerMock
-    );
+    handleOutput(["line1", "line2", "line3"], loggerMock);
   });
 
-  it("should give empty String to logger when no line is given in the array and optFile option is false", function() {
+  it("should give empty String to logger when no line is given in the array", function() {
     const loggerMock = function(arg) {
       assert.strictEqual(arg, "");
     };
-    handleOutput([], { optFileGiven: false }, loggerMock);
+    handleOutput([], loggerMock);
   });
 });
 

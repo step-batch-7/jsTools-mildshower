@@ -1,5 +1,5 @@
-const handleOutput = function(sortedLines, otpDetails, logger) {
-  !otpDetails.optFileGiven && logger(sortedLines.join("\n"));
+const handleOutput = function(sortedLines, logger) {
+  logger(sortedLines.join("\n"));
 };
 
 const sort = function(lines) {
