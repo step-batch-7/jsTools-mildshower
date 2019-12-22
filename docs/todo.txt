@@ -8,9 +8,10 @@ v-0.1
 		link: mainFile-libFile
 		inserting node-modules, .nyc-output, coverage to .gitignore
 		implement: 
-			handleOutput()           //now it just logs
-			sort()                   //only to sort without any option
-			handleContent()          //top level function that contains sort and handleOutput
+			--done-- handleOutput()           //now it just logs
+			--done-- sort()                   //only to sort without any option
+			processContent()         //top level function that contains sort and handleOutput
 			getFileContent()				 //for only 1 file
+			getContent()						 // function that handles both inputs(file and stdin)
 			areAllFilesValid()			 
 			parse()									 //basic

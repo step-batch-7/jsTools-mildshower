@@ -6,4 +6,9 @@ const sort = function(lines) {
   return lines.sort();
 };
 
-module.exports = { handleOutput, sort };
+const processContent = function(lines, logger) {
+  const sortedLines = sort(lines);
+  handleOutput(sortedLines, logger);
+};
+
+module.exports = { handleOutput, sort, processContent };

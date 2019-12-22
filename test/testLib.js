@@ -1,5 +1,5 @@
 const { assert } = require("chai");
-const { handleOutput, sort } = require("../src/sortLib");
+const { handleOutput, sort, processContent } = require("../src/sortLib");
 
 describe("#handleOutput()", function() {
   it("should join given lines and give the string to logger", function() {
@@ -17,7 +17,7 @@ describe("#handleOutput()", function() {
   });
 });
 
-describe("sort()", function() {
+describe("#sort()", function() {
   it("should sort given lines when the no sorting option is specified", function() {
     const actualValue = sort(["a", "A", "56", " 56", " "]);
     assert.deepStrictEqual(actualValue, [" ", " 56", "56", "A", "a"]);
@@ -25,5 +25,20 @@ describe("sort()", function() {
   it("should give empty array if an empty array is given to sort", function() {
     const actualValue = sort([]);
     assert.deepStrictEqual(actualValue, []);
+  });
+});
+
+describe("#processContent()", function() {
+  it("should sort given lines and give them to logger callback after joining", function() {
+    const loggerMock = function(arg) {
+      assert.strictEqual(arg, " \n 56\n56\nA\na");
+    };
+    processContent(["a", "A", "56", " 56", " "], loggerMock);
+  });
+  it("should pass empty string to logger callback if no line is given to sort", function() {
+    const loggerMock = function(arg) {
+      assert.strictEqual(arg, "");
+    };
+    processContent([], loggerMock);
   });
 });
