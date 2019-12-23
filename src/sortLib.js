@@ -16,4 +16,14 @@ const getFileLines = function(filePath, reader, postAction) {
   postAction(content.trim().split("\n"));
 };
 
-module.exports = { handleOutput, sort, processContent, getFileLines };
+const getContent = function(inputDetails, reader, postAction) {
+  getFileLines(inputDetails.filePath, reader, postAction);
+};
+
+module.exports = {
+  handleOutput,
+  sort,
+  processContent,
+  getFileLines,
+  getContent
+};

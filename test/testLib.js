@@ -3,7 +3,8 @@ const {
   handleOutput,
   sort,
   processContent,
-  getFileLines
+  getFileLines,
+  getContent
 } = require("../src/sortLib");
 
 describe("#handleOutput()", function() {
@@ -59,5 +60,19 @@ describe("#getFileLines()", function() {
       assert.deepStrictEqual(content, ["line1", "line2", "line3"]);
     };
     getFileLines("./file", reader, callBack);
+  });
+});
+
+describe("#getContent()", function() {
+  it("should go for reading file and passing lines to the callback when file path is given", function() {
+    const reader = function(filePath, encoding) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      return "line1\nline2\nline3";
+    };
+    const callBack = function(content) {
+      assert.deepStrictEqual(content, ["line1", "line2", "line3"]);
+    };
+    getContent({ filePath: "./file" }, reader, callBack);
   });
 });
