@@ -13,7 +13,7 @@ const processContent = function(logger, lines) {
 
 const getFileLines = function(filePath, reader, postAction) {
   const content = reader(filePath, "utf8");
-  postAction(content.trim().split("\n"));
+  postAction(content.split("\n"));
 };
 
 const getContent = function(inputDetails, reader, postAction) {

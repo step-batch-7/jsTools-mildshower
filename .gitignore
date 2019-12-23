@@ -5,3 +5,4 @@ docs/sortExploration.xmind
 .nyc_output
 node_modules
 coverage
+testFile.txt
