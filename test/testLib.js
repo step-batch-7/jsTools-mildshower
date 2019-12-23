@@ -1,5 +1,10 @@
 const { assert } = require("chai");
-const { handleOutput, sort, processContent } = require("../src/sortLib");
+const {
+  handleOutput,
+  sort,
+  processContent,
+  getFileLines
+} = require("../src/sortLib");
 
 describe("#handleOutput()", function() {
   it("should join given lines and give the string to logger", function() {
@@ -40,5 +45,19 @@ describe("#processContent()", function() {
       assert.strictEqual(arg, "");
     };
     processContent([], loggerMock);
+  });
+});
+
+describe("#getFileLines()", function() {
+  it("should pass the fileLines of given file path to the callBack", function() {
+    const reader = function(filePath, encoding) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      return "line1\nline2\nline3";
+    };
+    const callBack = function(content) {
+      assert.deepStrictEqual(content, ["line1", "line2", "line3"]);
+    };
+    getFileLines("./file", reader, callBack);
   });
 });

@@ -10,8 +10,8 @@ v-0.1
 		implement: 
 			--done-- handleOutput()           //now it just logs
 			--done-- sort()                   //only to sort without any option
-			processContent()         //top level function that contains sort and handleOutput
-			getFileContent()				 //for only 1 file
-			getContent()						 // function that handles both inputs(file and stdin)
+			--done-- processContent()         //top level function that contains sort and handleOutput
 			areAllFilesValid()			 
-			parse()									 //basic
+			getFileLines()				   //for only 1 file
+			getContent()						 // function that handles both inputs(file and stdin)
+			parse()									 //basic parsing

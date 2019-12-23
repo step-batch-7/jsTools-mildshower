@@ -11,4 +11,9 @@ const processContent = function(lines, logger) {
   handleOutput(sortedLines, logger);
 };
 
-module.exports = { handleOutput, sort, processContent };
+const getFileLines = function(filePath, reader, postAction) {
+  const content = reader(filePath, "utf8");
+  postAction(content.trim().split("\n"));
+};
+
+module.exports = { handleOutput, sort, processContent, getFileLines };
