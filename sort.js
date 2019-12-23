@@ -1,4 +1,4 @@
-const { readFileSync, existsSync } = require("fs");
+const { readFile, existsSync } = require("fs");
 const { processContent, performSorting } = require("./src/sortLib");
 
 const main = function() {
@@ -10,7 +10,7 @@ const main = function() {
   };
   const helperFuncs = {
     contentProcessor: processContent.bind(null, logger),
-    reader: readFileSync,
+    reader: readFile,
     errorLogger,
     doesExist: existsSync
   };

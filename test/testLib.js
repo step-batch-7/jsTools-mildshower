@@ -54,13 +54,13 @@ describe("#processContent()", function() {
 
 describe("#getFileLines()", function() {
   it("should pass the fileLines of given file path to the callBack", function() {
-    const reader = function(filePath, encoding) {
-      assert.strictEqual(filePath, "./file");
-      assert.strictEqual(encoding, "utf8");
-      return "line1\nline2\nline3";
-    };
     const callBack = function(content) {
       assert.deepStrictEqual(content, ["line1", "line2", "line3"]);
+    };
+    const reader = function(filePath, encoding, callBack) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      callBack(null, "line1\nline2\nline3");
     };
     getFileLines("./file", reader, callBack);
   });
@@ -68,10 +68,10 @@ describe("#getFileLines()", function() {
 
 describe("#getContent()", function() {
   it("should go for reading file and passing lines to the callback when file path is given", function() {
-    const reader = function(filePath, encoding) {
+    const reader = function(filePath, encoding, callBack) {
       assert.strictEqual(filePath, "./file");
       assert.strictEqual(encoding, "utf8");
-      return "line1\nline2\nline3";
+      callBack(null, "line1\nline2\nline3");
     };
     const callBack = function(content) {
       assert.deepStrictEqual(content, ["line1", "line2", "line3"]);
@@ -111,10 +111,10 @@ describe("#parse()", function() {
 describe("#performSorting", function() {
   it("should sort a file and give it to logger when file is given and file exists", function() {
     const helperFuncs = {
-      reader: function(filePath, encoding) {
+      reader: function(filePath, encoding, callBack) {
         assert.strictEqual(filePath, "./file");
         assert.strictEqual(encoding, "utf8");
-        return "line1\nline2\nline3";
+        callBack(null, "line1\nline2\nline3");
       },
       doesExist: function(filePath) {
         assert.strictEqual(filePath, "./file");
