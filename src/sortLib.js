@@ -24,11 +24,17 @@ const doesFileExist = function(filePath, existanceChecker) {
   return existanceChecker(filePath);
 };
 
+const parse = function(userArgs) {
+  const [filePath] = userArgs;
+  return { filePath };
+};
+
 module.exports = {
   handleOutput,
   sort,
   processContent,
   getFileLines,
   getContent,
-  doesFileExist
+  doesFileExist,
+  parse
 };
