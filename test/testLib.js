@@ -30,11 +30,14 @@ describe("#parse()", function() {
 });
 
 describe("#performSorting", function() {
-  it("should sort a file and give it to logger when file is given and file exists", function() {
+  it("should sort a file and pass result to callBack when file is given and file exists", function() {
+    const callBack = function(sortOutput) {
+      assert.deepStrictEqual(sortOutput, {
+        doesSortWork: true,
+        sortedContent: "line1\nline2\nline3"
+      });
+    };
     const helperFuncs = {
-      logger: function(lines) {
-        assert.deepStrictEqual(lines, "line1\nline2\nline3");
-      },
       reader: function(filePath, encoding, callBack) {
         assert.strictEqual(filePath, "./file");
         assert.strictEqual(encoding, "utf8");
@@ -45,19 +48,22 @@ describe("#performSorting", function() {
         return true;
       }
     };
-    performSorting(["./file"], helperFuncs);
+    performSorting(["./file"], helperFuncs, callBack);
   });
 
-  it("should give error message if the file in user args does not exist", function() {
+  it("should pass error flag and error to callBack if the file in user args does not exist", function() {
+    const callBack = function(sortOutput) {
+      assert.deepStrictEqual(sortOutput, {
+        doesSortWork: false,
+        errorMsg: "sort: No such file or directory"
+      });
+    };
     const helperFuncs = {
       doesExist: function(filePath) {
         assert.strictEqual(filePath, "./file");
         return false;
-      },
-      errorLogger: function(arg) {
-        assert.strictEqual(arg, "sort: No such file or directory");
       }
     };
-    performSorting(["./file"], helperFuncs);
+    performSorting(["./file"], helperFuncs, callBack);
   });
 });

@@ -9,17 +9,20 @@ const parse = function(userArgs) {
   return { filePath, isInputValid: true };
 };
 
-const performSort = function(userArgs, helperFuncs) {
+const performSort = function(userArgs, helperFuncs, callBack) {
   const parsedArgs = parse(userArgs);
-  const { reader, errorLogger, doesExist, logger } = helperFuncs;
+  const { reader, doesExist } = helperFuncs;
   if (parsedArgs.isInputValid) {
     if (!doesExist(parsedArgs.filePath)) {
-      errorLogger(`sort: No such file or directory`);
+      callBack({
+        doesSortWork: false,
+        errorMsg: `sort: No such file or directory`
+      });
       return;
     }
     loadFileLines(parsedArgs.filePath, reader, lines => {
       const sortedLines = lines.sort();
-      logger(sortedLines.join("\n"));
+      callBack({ doesSortWork: true, sortedContent: sortedLines.join("\n") });
     });
   }
 };
