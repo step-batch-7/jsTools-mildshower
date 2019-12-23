@@ -1,25 +1,9 @@
 const { assert } = require("chai");
 const {
-  processContent,
-  loadFileLines: getFileLines,
+  loadFileLines,
   parse,
   performSort: performSorting
 } = require("../src/sortLib");
-
-describe("#processContent()", function() {
-  it("should sort given lines and give them to logger callback after joining", function() {
-    const loggerMock = function(arg) {
-      assert.strictEqual(arg, " \n 56\n56\nA\na");
-    };
-    processContent(loggerMock, ["a", "A", "56", " 56", " "]);
-  });
-  it("should pass empty string to logger callback if no line is given to sort", function() {
-    const loggerMock = function(arg) {
-      assert.strictEqual(arg, "");
-    };
-    processContent(loggerMock, []);
-  });
-});
 
 describe("#getFileLines()", function() {
   it("should pass the fileLines of given file path to the callBack", function() {
@@ -31,7 +15,7 @@ describe("#getFileLines()", function() {
       assert.strictEqual(encoding, "utf8");
       callBack(null, "line1\nline2\nline3");
     };
-    getFileLines("./file", reader, callBack);
+    loadFileLines("./file", reader, callBack);
   });
 });
 
@@ -48,6 +32,9 @@ describe("#parse()", function() {
 describe("#performSorting", function() {
   it("should sort a file and give it to logger when file is given and file exists", function() {
     const helperFuncs = {
+      logger: function(lines) {
+        assert.deepStrictEqual(lines, "line1\nline2\nline3");
+      },
       reader: function(filePath, encoding, callBack) {
         assert.strictEqual(filePath, "./file");
         assert.strictEqual(encoding, "utf8");
@@ -56,9 +43,6 @@ describe("#performSorting", function() {
       doesExist: function(filePath) {
         assert.strictEqual(filePath, "./file");
         return true;
-      },
-      contentProcessor: function(lines) {
-        assert.deepStrictEqual(lines, ["line1", "line2", "line3"]);
       }
     };
     performSorting(["./file"], helperFuncs);

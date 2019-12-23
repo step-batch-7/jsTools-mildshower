@@ -1,8 +1,3 @@
-const processContent = function(logger, lines) {
-  const sortedLines = lines.sort();
-  logger(sortedLines.join("\n"));
-};
-
 const loadFileLines = function(filePath, reader, postAction) {
   reader(filePath, "utf8", (error, content) => {
     postAction(content.split("\n"));
@@ -16,18 +11,20 @@ const parse = function(userArgs) {
 
 const performSort = function(userArgs, helperFuncs) {
   const parsedArgs = parse(userArgs);
-  const { contentProcessor, reader, errorLogger, doesExist } = helperFuncs;
+  const { reader, errorLogger, doesExist, logger } = helperFuncs;
   if (parsedArgs.isInputValid) {
     if (!doesExist(parsedArgs.filePath)) {
       errorLogger(`sort: No such file or directory`);
       return;
     }
-    loadFileLines(parsedArgs.filePath, reader, contentProcessor);
+    loadFileLines(parsedArgs.filePath, reader, lines => {
+      const sortedLines = lines.sort();
+      logger(sortedLines.join("\n"));
+    });
   }
 };
 
 module.exports = {
-  processContent,
   loadFileLines,
   parse,
   performSort
