@@ -1,6 +1,6 @@
-const loadFileLines = function(filePath, reader, postAction) {
+const loadFileLines = function(filePath, reader, sortFileLines) {
   reader(filePath, "utf8", (error, content) => {
-    postAction(content.split("\n"));
+    sortFileLines(content.split("\n"));
   });
 };
 
@@ -9,19 +9,19 @@ const parse = function(userArgs) {
   return { filePath, isInputValid: true };
 };
 
-const performSort = function(userArgs, helperFuncs, callBack) {
+const performSort = function(userArgs, helperFuncs, showOutput) {
   const parsedArgs = parse(userArgs);
   const { reader, doesExist } = helperFuncs;
   if (parsedArgs.isInputValid) {
     if (!doesExist(parsedArgs.filePath)) {
-      callBack({
+      showOutput({
         errorMsg: `sort: No such file or directory`
       });
       return;
     }
     loadFileLines(parsedArgs.filePath, reader, lines => {
       const sortedLines = lines.sort();
-      callBack({ sortedContent: sortedLines.join("\n") });
+      showOutput({ sortedContent: sortedLines.join("\n") });
     });
   }
 };
