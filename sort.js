@@ -1,5 +1,8 @@
 const { readFile, existsSync } = require("fs");
-const { processContent, performSorting } = require("./src/sortLib");
+const {
+  processContent,
+  performSort: performSorting
+} = require("./src/sortLib");
 
 const main = function() {
   const logger = function(msg) {

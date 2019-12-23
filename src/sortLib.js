@@ -14,7 +14,7 @@ const parse = function(userArgs) {
   return { filePath, isInputValid: true };
 };
 
-const performSorting = function(userArgs, helperFuncs) {
+const performSort = function(userArgs, helperFuncs) {
   const parsedArgs = parse(userArgs);
   const { contentProcessor, reader, errorLogger, doesExist } = helperFuncs;
   if (parsedArgs.isInputValid) {
@@ -30,5 +30,5 @@ module.exports = {
   processContent,
   getFileLines,
   parse,
-  performSorting
+  performSort
 };

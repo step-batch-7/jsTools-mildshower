@@ -3,7 +3,7 @@ const {
   processContent,
   getFileLines,
   parse,
-  performSorting
+  performSort: performSorting
 } = require("../src/sortLib");
 
 describe("#processContent()", function() {
