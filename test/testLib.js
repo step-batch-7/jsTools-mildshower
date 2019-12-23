@@ -33,7 +33,6 @@ describe("#performSorting", function() {
   it("should sort a file and pass result to callBack when file is given and file exists", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        doesSortWork: true,
         sortedContent: "line1\nline2\nline3"
       });
     };
@@ -54,7 +53,6 @@ describe("#performSorting", function() {
   it("should pass error flag and error to callBack if the file in user args does not exist", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        doesSortWork: false,
         errorMsg: "sort: No such file or directory"
       });
     };

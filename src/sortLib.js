@@ -15,14 +15,13 @@ const performSort = function(userArgs, helperFuncs, callBack) {
   if (parsedArgs.isInputValid) {
     if (!doesExist(parsedArgs.filePath)) {
       callBack({
-        doesSortWork: false,
         errorMsg: `sort: No such file or directory`
       });
       return;
     }
     loadFileLines(parsedArgs.filePath, reader, lines => {
       const sortedLines = lines.sort();
-      callBack({ doesSortWork: true, sortedContent: sortedLines.join("\n") });
+      callBack({ sortedContent: sortedLines.join("\n") });
     });
   }
 };
