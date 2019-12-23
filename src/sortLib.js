@@ -26,8 +26,10 @@ const doesFileExist = function(filePath, existanceChecker) {
 
 const parse = function(userArgs) {
   const [filePath] = userArgs;
-  return { filePath };
+  return { filePath, isInputValid: true };
 };
+
+const perfortSorting = function(userArgs) {};
 
 module.exports = {
   handleOutput,

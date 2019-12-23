@@ -98,8 +98,11 @@ describe("#doesFileExist()", function() {
 });
 
 describe("#parse()", function() {
-  it("should parse the user given args and give a object with needed properties for sort", function() {
+  it("should parse the user given args and give needed properties for sort and input validation", function() {
     const actualValue = parse(["./file"]);
-    assert.deepStrictEqual(actualValue, { filePath: "./file" });
+    assert.deepStrictEqual(actualValue, {
+      filePath: "./file",
+      isInputValid: true
+    });
   });
 });
