@@ -6,7 +6,8 @@ const {
   getFileLines,
   getContent,
   doesFileExist,
-  parse
+  parse,
+  performSorting
 } = require("../src/sortLib");
 
 describe("#handleOutput()", function() {
@@ -41,13 +42,13 @@ describe("#processContent()", function() {
     const loggerMock = function(arg) {
       assert.strictEqual(arg, " \n 56\n56\nA\na");
     };
-    processContent(["a", "A", "56", " 56", " "], loggerMock);
+    processContent(loggerMock, ["a", "A", "56", " 56", " "]);
   });
   it("should pass empty string to logger callback if no line is given to sort", function() {
     const loggerMock = function(arg) {
       assert.strictEqual(arg, "");
     };
-    processContent([], loggerMock);
+    processContent(loggerMock, []);
   });
 });
 
@@ -104,5 +105,38 @@ describe("#parse()", function() {
       filePath: "./file",
       isInputValid: true
     });
+  });
+});
+
+describe("#performSorting", function() {
+  it("should sort a file and give it to logger when file is given and file exists", function() {
+    const helperFuncs = {
+      reader: function(filePath, encoding) {
+        assert.strictEqual(filePath, "./file");
+        assert.strictEqual(encoding, "utf8");
+        return "line1\nline2\nline3";
+      },
+      doesExist: function(filePath) {
+        assert.strictEqual(filePath, "./file");
+        return true;
+      },
+      contentProcessor: function(lines) {
+        assert.deepStrictEqual(lines, ["line1", "line2", "line3"]);
+      }
+    };
+    performSorting(["./file"], helperFuncs);
+  });
+
+  it("should give error message if the file in user args does not exist", function() {
+    const helperFuncs = {
+      doesExist: function(filePath) {
+        assert.strictEqual(filePath, "./file");
+        return false;
+      },
+      errorLogger: function(arg) {
+        assert.strictEqual(arg, "sort: No such file or directory");
+      }
+    };
+    performSorting(["./file"], helperFuncs);
   });
 });
