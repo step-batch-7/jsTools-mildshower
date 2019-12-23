@@ -4,7 +4,8 @@ const {
   sort,
   processContent,
   getFileLines,
-  getContent
+  getContent,
+  doesFileExist
 } = require("../src/sortLib");
 
 describe("#handleOutput()", function() {
@@ -74,5 +75,23 @@ describe("#getContent()", function() {
       assert.deepStrictEqual(content, ["line1", "line2", "line3"]);
     };
     getContent({ filePath: "./file" }, reader, callBack);
+  });
+});
+
+describe("#doesFileExist()", function() {
+  it("should give true if the given file exist", function() {
+    const existanceChecker = function(filePath) {
+      assert.strictEqual(filePath, "./file");
+      return true;
+    };
+    assert.ok(doesFileExist("./file", existanceChecker));
+  });
+
+  it("should give false if the given file exist", function() {
+    const existanceChecker = function(filePath) {
+      assert.strictEqual(filePath, "./file");
+      return false;
+    };
+    assert.notOk(doesFileExist("./file", existanceChecker));
   });
 });

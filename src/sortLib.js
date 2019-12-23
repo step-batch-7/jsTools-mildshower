@@ -20,10 +20,15 @@ const getContent = function(inputDetails, reader, postAction) {
   getFileLines(inputDetails.filePath, reader, postAction);
 };
 
+const doesFileExist = function(filePath, existanceChecker) {
+  return existanceChecker(filePath);
+};
+
 module.exports = {
   handleOutput,
   sort,
   processContent,
   getFileLines,
-  getContent
+  getContent,
+  doesFileExist
 };
