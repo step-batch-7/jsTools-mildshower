@@ -3,7 +3,7 @@ const { performSort: performSorting } = require("./src/sortLib");
 
 const showOutput = function(sortOutput) {
   sortOutput.errorMsg && console.error(sortOutput.errorMsg);
-  sortOutput.sortedContent && console.error(sortOutput.sortedContent);
+  sortOutput.sortedContent && console.log(sortOutput.sortedContent);
 };
 
 const main = function() {
