@@ -3,7 +3,7 @@ const processContent = function(logger, lines) {
   logger(sortedLines.join("\n"));
 };
 
-const getFileLines = function(filePath, reader, postAction) {
+const loadFileLines = function(filePath, reader, postAction) {
   reader(filePath, "utf8", (error, content) => {
     postAction(content.split("\n"));
   });
@@ -22,13 +22,13 @@ const performSort = function(userArgs, helperFuncs) {
       errorLogger(`sort: No such file or directory`);
       return;
     }
-    getFileLines(parsedArgs.filePath, reader, contentProcessor);
+    loadFileLines(parsedArgs.filePath, reader, contentProcessor);
   }
 };
 
 module.exports = {
   processContent,
-  getFileLines,
+  loadFileLines,
   parse,
   performSort
 };

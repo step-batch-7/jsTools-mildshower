@@ -1,7 +1,7 @@
 const { assert } = require("chai");
 const {
   processContent,
-  getFileLines,
+  loadFileLines: getFileLines,
   parse,
   performSort: performSorting
 } = require("../src/sortLib");
