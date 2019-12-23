@@ -2,11 +2,15 @@ const { readFile, existsSync } = require("fs");
 const { performSort: performSorting } = require("./src/sortLib");
 
 const showOutput = function(sortOutput) {
-  if (sortOutput.doesSortWork) {
-    console.log(sortOutput.sortedContent);
-    return;
-  }
-  console.error(sortOutput.errorMsg);
+  displayActions = {
+    true: function() {
+      console.log(sortOutput.sortedContent);
+    },
+    false: function() {
+      console.error(sortOutput.errorMsg);
+    }
+  };
+  displayActions[sortOutput.doesSortWork]();
 };
 
 const main = function() {
