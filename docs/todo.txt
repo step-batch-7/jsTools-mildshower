@@ -3,15 +3,21 @@ sort.js
 v-0.1
 	node sort.js file 
 
-		directories: src, test, appTests
-		files: sort.js, package.json, appTestCode, sortLib.js
-		link: mainFile-libFile
-		inserting node-modules, .nyc-output, coverage to .gitignore
-		implement: 
-			--done-- handleOutput()           //now it just logs
-			--done-- sort()                   //only to sort without any option
-			--done-- processContent()         //top level function that contains sort and handleOutput
-			areAllFilesValid()			 
-			getFileLines()				   //for only 1 file
-			getContent()						 // function that handles both inputs(file and stdin)
-			parse()									 //basic parsing
+		--done-- directories: src, test, appTests
+		--done-- files: sort.js, package.json, appTestCode, sortLib.js
+		--done-- link: mainFile-libFile
+		--done-- inserting node-modules, .nyc-output, coverage to .gitignore
+		--done-- implement: 
+			--done-- parse()									 //basic parsing
+			--done-- loadFileLines()				   //for only 1 file
+			--done-- performSort()						 //that contains the sorting code and acts as a pseudo main
+
+v-0.2
+	node sort.js file1 file2
+
+	modification:
+		parse()   //now parse will give filePaths in an array
+		loadFileLines()  //now it will load all files' lines
+
+	implementation:
+		doAllFilesExist()   //a separate function to check whether all given filePaths are valid or not
