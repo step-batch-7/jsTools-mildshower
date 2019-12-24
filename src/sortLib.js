@@ -16,20 +16,32 @@ const loadStdInLines = function(IOInterface, onCompletion) {
   IOInterface.on("end", () => onCompletion(lines));
 };
 
-const performSort = function(userArgs, fileOperations, onCompletion) {
+const performSort = function(
+  userArgs,
+  fileOperations,
+  IOInterface,
+  onCompletion
+) {
   const parsedArgs = parse(userArgs);
   const { reader, doesExist } = fileOperations;
   if (parsedArgs.isInputValid) {
-    if (!doesExist(parsedArgs.filePath)) {
-      onCompletion({
-        errorMsg: `sort: No such file or directory`
+    if (parsedArgs.filePath) {
+      if (!doesExist(parsedArgs.filePath)) {
+        onCompletion({
+          errorMsg: `sort: No such file or directory`
+        });
+        return;
+      }
+      loadFileLines(parsedArgs.filePath, reader, lines => {
+        const sortedLines = lines.sort();
+        onCompletion({ sortedContent: sortedLines.join("\n") });
       });
-      return;
+    } else {
+      loadStdInLines(IOInterface, lines => {
+        const sortedLines = lines.sort();
+        onCompletion({ sortedContent: sortedLines.join("\n") });
+      });
     }
-    loadFileLines(parsedArgs.filePath, reader, lines => {
-      const sortedLines = lines.sort();
-      onCompletion({ sortedContent: sortedLines.join("\n") });
-    });
   }
 };
 

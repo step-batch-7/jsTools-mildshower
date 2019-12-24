@@ -12,7 +12,7 @@ const main = function() {
     doesExist: existsSync
   };
   const userArgs = process.argv.slice(2);
-  performSort(userArgs, fileOperations, showOutput);
+  performSort(userArgs, fileOperations, undefined, showOutput);
 };
 
 main();

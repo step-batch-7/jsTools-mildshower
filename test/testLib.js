@@ -29,6 +29,14 @@ describe("#parse()", function() {
       isInputValid: true
     });
   });
+
+  it("should give filePath as undefined if no filePath is given", function() {
+    const actualValue = parse([]);
+    assert.deepStrictEqual(actualValue, {
+      filePath: undefined,
+      isInputValid: true
+    });
+  });
 });
 
 describe("#performSort", function() {
@@ -38,7 +46,7 @@ describe("#performSort", function() {
         sortedContent: "line1\nline2\nline3"
       });
     };
-    const helperFuncs = {
+    const fileOperations = {
       reader: function(filePath, encoding, callBack) {
         assert.strictEqual(filePath, "./file");
         assert.strictEqual(encoding, "utf8");
@@ -49,7 +57,7 @@ describe("#performSort", function() {
         return true;
       }
     };
-    performSort(["./file"], helperFuncs, callBack);
+    performSort(["./file"], fileOperations, null, callBack);
   });
 
   it("should pass error flag and error to callBack if the file in user args does not exist", function() {
@@ -58,17 +66,35 @@ describe("#performSort", function() {
         errorMsg: "sort: No such file or directory"
       });
     };
-    const helperFuncs = {
+    const fileOperations = {
       doesExist: function(filePath) {
         assert.strictEqual(filePath, "./file");
         return false;
       }
     };
-    performSort(["./file"], helperFuncs, callBack);
+    performSort(["./file"], fileOperations, null, callBack);
+  });
+
+  it("should pass sorted content from stdIn interface if no filePath is given", function() {
+    let count = 0;
+    const callBack = function(sortOutput) {
+      assert.deepStrictEqual(sortOutput, {
+        sortedContent: "line1\nline2\nline3"
+      });
+      count++;
+    };
+    const interface = new events();
+    interface.resume = () => {};
+    performSort([], {}, interface, callBack);
+    interface.emit("line", "line3");
+    interface.emit("line", "line1");
+    interface.emit("line", "line2");
+    interface.emit("end");
+    assert.equal(count, 1);
   });
 });
 
-describe.only("#loadStdInLines()", function() {
+describe("#loadStdInLines()", function() {
   it("should take lines on line event of the given interface and send all lines to the callBack", function() {
     const interface = new events();
     interface.resume = () => {};
