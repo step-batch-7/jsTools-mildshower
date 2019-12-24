@@ -13,7 +13,7 @@ const loadStdInLines = function(IOInterface, onCompletion) {
   const lines = [];
   IOInterface.resume();
   IOInterface.on("line", line => lines.push(line));
-  IOInterface.on("end", () => onCompletion(lines));
+  IOInterface.on("close", () => onCompletion(lines));
 };
 
 const performSort = function(

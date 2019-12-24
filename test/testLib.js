@@ -89,22 +89,25 @@ describe("#performSort", function() {
     interface.emit("line", "line3");
     interface.emit("line", "line1");
     interface.emit("line", "line2");
-    interface.emit("end");
+    interface.emit("close");
     assert.equal(count, 1);
   });
 });
 
 describe("#loadStdInLines()", function() {
   it("should take lines on line event of the given interface and send all lines to the callBack", function() {
+    let count = 0;
     const interface = new events();
     interface.resume = () => {};
     const callBack = function(lines) {
       assert.deepStrictEqual(lines, ["line1", "line2", "line3"]);
+      count++;
     };
     loadStdInLines(interface, callBack);
     interface.emit("line", "line1");
     interface.emit("line", "line2");
     interface.emit("line", "line3");
-    interface.emit("end");
+    interface.emit("close");
+    assert.equal(count, 1);
   });
 });

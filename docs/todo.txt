@@ -16,8 +16,11 @@ v-0.2
 	node sort.js
 
 	modification:
-		parse()   //now parse will check whether the file is given or not
-		performSort()  //now it will decide whether to go for file or stdin
+		--done-- parse()   //now parse will check whether the file is given or not
+		--sone-- performSort()  //now it will decide whether to go for file or stdin
 
 	Implement:
 		--done-- loadStdInLines()  //that will use io interface and take lines from user
+
+	send:
+		sending IO interface from main to other functions
