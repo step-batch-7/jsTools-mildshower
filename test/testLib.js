@@ -1,8 +1,10 @@
+const events = require("events");
 const { assert } = require("chai");
 const {
   loadFileLines,
   parse,
-  performSort: performSorting
+  performSort,
+  loadStdInLines
 } = require("../src/sortLib");
 
 describe("#getFileLines()", function() {
@@ -29,7 +31,7 @@ describe("#parse()", function() {
   });
 });
 
-describe("#performSorting", function() {
+describe("#performSort", function() {
   it("should sort a file and pass result to callBack when file is given and file exists", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
@@ -47,7 +49,7 @@ describe("#performSorting", function() {
         return true;
       }
     };
-    performSorting(["./file"], helperFuncs, callBack);
+    performSort(["./file"], helperFuncs, callBack);
   });
 
   it("should pass error flag and error to callBack if the file in user args does not exist", function() {
@@ -62,6 +64,21 @@ describe("#performSorting", function() {
         return false;
       }
     };
-    performSorting(["./file"], helperFuncs, callBack);
+    performSort(["./file"], helperFuncs, callBack);
+  });
+});
+
+describe.only("#loadStdInLines()", function() {
+  it("should take lines on line event of the given interface and send all lines to the callBack", function() {
+    const interface = new events();
+    interface.resume = () => {};
+    const callBack = function(lines) {
+      assert.deepStrictEqual(lines, ["line1", "line2", "line3"]);
+    };
+    loadStdInLines(interface, callBack);
+    interface.emit("line", "line1");
+    interface.emit("line", "line2");
+    interface.emit("line", "line3");
+    interface.emit("end");
   });
 });

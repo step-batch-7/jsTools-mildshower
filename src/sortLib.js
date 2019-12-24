@@ -9,6 +9,13 @@ const parse = function(userArgs) {
   return { filePath, isInputValid: true };
 };
 
+const loadStdInLines = function(IOInterface, onCompletion) {
+  const lines = [];
+  IOInterface.resume();
+  IOInterface.on("line", line => lines.push(line));
+  IOInterface.on("end", () => onCompletion(lines));
+};
+
 const performSort = function(userArgs, fileOperations, onCompletion) {
   const parsedArgs = parse(userArgs);
   const { reader, doesExist } = fileOperations;
@@ -29,5 +36,6 @@ const performSort = function(userArgs, fileOperations, onCompletion) {
 module.exports = {
   loadFileLines,
   parse,
-  performSort
+  performSort,
+  loadStdInLines
 };
