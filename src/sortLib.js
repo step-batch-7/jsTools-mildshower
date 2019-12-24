@@ -22,27 +22,30 @@ const loadStdInLines = function(IOInterface, onCompletion) {
   const lines = [];
   IOInterface.resume();
   IOInterface.on("line", line => lines.push(line));
-  IOInterface.on("close", () => onCompletion(lines));
+  IOInterface.on("close", () => onCompletion({ lines }));
+};
+
+const sortLines = function(loadedContent, onCompletion) {
+  if (loadedContent.errorMsg) {
+    onCompletion({ errorMsg: loadedContent.errorMsg });
+    return;
+  }
+  const sortedLines = loadedContent.lines.sort();
+  onCompletion({ sortedContent: sortedLines.join("\n") });
 };
 
 const performSort = function(userArgs, reader, IOInterface, onCompletion) {
   const parsedArgs = parse(userArgs);
   if (parsedArgs.isInputValid) {
     if (parsedArgs.filePath) {
-      loadFileLines(parsedArgs.filePath, reader, readContent => {
-        if (readContent.errorMsg) {
-          onCompletion({ errorMsg: readContent.errorMsg });
-          return;
-        }
-        const sortedLines = readContent.lines.sort();
-        onCompletion({ sortedContent: sortedLines.join("\n") });
+      loadFileLines(parsedArgs.filePath, reader, loadedContent => {
+        sortLines(loadedContent, onCompletion);
       });
-    } else {
-      loadStdInLines(IOInterface, lines => {
-        const sortedLines = lines.sort();
-        onCompletion({ sortedContent: sortedLines.join("\n") });
-      });
+      return;
     }
+    loadStdInLines(IOInterface, loadedContent => {
+      sortLines(loadedContent, onCompletion);
+    });
   }
 };
 

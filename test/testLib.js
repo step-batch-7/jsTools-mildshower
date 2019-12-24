@@ -7,7 +7,7 @@ const {
   loadStdInLines
 } = require("../src/sortLib");
 
-describe("#getFileLines()", function() {
+describe("#loadFileLines()", function() {
   it("should pass the fileLines of given file path to the callBack", function() {
     const callBack = function(content) {
       assert.deepStrictEqual(content, { lines: ["line1", "line2", "line3"] });
@@ -136,7 +136,7 @@ describe("#loadStdInLines()", function() {
     const interface = new events();
     interface.resume = () => {};
     const callBack = function(lines) {
-      assert.deepStrictEqual(lines, ["line1", "line2", "line3"]);
+      assert.deepStrictEqual(lines, { lines: ["line1", "line2", "line3"] });
       count++;
     };
     loadStdInLines(interface, callBack);
