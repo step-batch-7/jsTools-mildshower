@@ -10,12 +10,54 @@ const {
 describe("#getFileLines()", function() {
   it("should pass the fileLines of given file path to the callBack", function() {
     const callBack = function(content) {
-      assert.deepStrictEqual(content, ["line1", "line2", "line3"]);
+      assert.deepStrictEqual(content, { lines: ["line1", "line2", "line3"] });
     };
     const reader = function(filePath, encoding, callBack) {
       assert.strictEqual(filePath, "./file");
       assert.strictEqual(encoding, "utf8");
       callBack(null, "line1\nline2\nline3");
+    };
+    loadFileLines("./file", reader, callBack);
+  });
+
+  it("should pass errorMsg to the callBack if filePath is incorrect", function() {
+    const callBack = function(content) {
+      assert.deepStrictEqual(content, {
+        errorMsg: "sort: No such file or directory"
+      });
+    };
+    const reader = function(filePath, encoding, callBack) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      callBack({ code: "ENOENT" });
+    };
+    loadFileLines("./file", reader, callBack);
+  });
+
+  it("should pass errorMsg to the callBack if filePath the path to a directory", function() {
+    const callBack = function(content) {
+      assert.deepStrictEqual(content, {
+        errorMsg: "sort: Is a directory"
+      });
+    };
+    const reader = function(filePath, encoding, callBack) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      callBack({ code: "EISDIR" });
+    };
+    loadFileLines("./file", reader, callBack);
+  });
+
+  it("should pass errorMsg to the callBack if permission denied for file reading", function() {
+    const callBack = function(content) {
+      assert.deepStrictEqual(content, {
+        errorMsg: "sort: Permission denied"
+      });
+    };
+    const reader = function(filePath, encoding, callBack) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      callBack({ code: "EACCES" });
     };
     loadFileLines("./file", reader, callBack);
   });
@@ -46,18 +88,13 @@ describe("#performSort", function() {
         sortedContent: "line1\nline2\nline3"
       });
     };
-    const fileOperations = {
-      reader: function(filePath, encoding, callBack) {
-        assert.strictEqual(filePath, "./file");
-        assert.strictEqual(encoding, "utf8");
-        callBack(null, "line1\nline2\nline3");
-      },
-      doesExist: function(filePath) {
-        assert.strictEqual(filePath, "./file");
-        return true;
-      }
+
+    const reader = function(filePath, encoding, callBack) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      callBack(null, "line1\nline2\nline3");
     };
-    performSort(["./file"], fileOperations, null, callBack);
+    performSort(["./file"], reader, null, callBack);
   });
 
   it("should pass error flag and error to callBack if the file in user args does not exist", function() {
@@ -66,13 +103,12 @@ describe("#performSort", function() {
         errorMsg: "sort: No such file or directory"
       });
     };
-    const fileOperations = {
-      doesExist: function(filePath) {
-        assert.strictEqual(filePath, "./file");
-        return false;
-      }
+    const reader = function(filePath, encoding, callBack) {
+      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(encoding, "utf8");
+      callBack({ code: "ENOENT" });
     };
-    performSort(["./file"], fileOperations, null, callBack);
+    performSort(["./file"], reader, null, callBack);
   });
 
   it("should pass sorted content from stdIn interface if no filePath is given", function() {
@@ -85,7 +121,7 @@ describe("#performSort", function() {
     };
     const interface = new events();
     interface.resume = () => {};
-    performSort([], {}, interface, callBack);
+    performSort([], () => {}, interface, callBack);
     interface.emit("line", "line3");
     interface.emit("line", "line1");
     interface.emit("line", "line2");

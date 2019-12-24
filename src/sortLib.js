@@ -1,6 +1,15 @@
 const loadFileLines = function(filePath, reader, onCompletion) {
+  const errorMsgs = {
+    EACCES: "sort: Permission denied",
+    ENOENT: "sort: No such file or directory",
+    EISDIR: "sort: Is a directory"
+  };
   reader(filePath, "utf8", (error, content) => {
-    onCompletion(content.split("\n"));
+    if (error) {
+      onCompletion({ errorMsg: errorMsgs[error.code] });
+      return;
+    }
+    onCompletion({ lines: content.split("\n") });
   });
 };
 
@@ -16,24 +25,16 @@ const loadStdInLines = function(IOInterface, onCompletion) {
   IOInterface.on("close", () => onCompletion(lines));
 };
 
-const performSort = function(
-  userArgs,
-  fileOperations,
-  IOInterface,
-  onCompletion
-) {
+const performSort = function(userArgs, reader, IOInterface, onCompletion) {
   const parsedArgs = parse(userArgs);
-  const { reader, doesExist } = fileOperations;
   if (parsedArgs.isInputValid) {
     if (parsedArgs.filePath) {
-      if (!doesExist(parsedArgs.filePath)) {
-        onCompletion({
-          errorMsg: `sort: No such file or directory`
-        });
-        return;
-      }
-      loadFileLines(parsedArgs.filePath, reader, lines => {
-        const sortedLines = lines.sort();
+      loadFileLines(parsedArgs.filePath, reader, readContent => {
+        if (readContent.errorMsg) {
+          onCompletion({ errorMsg: readContent.errorMsg });
+          return;
+        }
+        const sortedLines = readContent.lines.sort();
         onCompletion({ sortedContent: sortedLines.join("\n") });
       });
     } else {

@@ -1,5 +1,5 @@
 const { createInterface } = require("readline");
-const { readFile, existsSync } = require("fs");
+const { readFile } = require("fs");
 const { performSort } = require("./src/sortLib");
 
 const showOutput = function(sortOutput) {
@@ -8,14 +8,10 @@ const showOutput = function(sortOutput) {
 };
 
 const main = function() {
-  const fileOperations = {
-    reader: readFile,
-    doesExist: existsSync
-  };
   const IOInterface = createInterface(process.stdin);
   IOInterface.pause();
   const userArgs = process.argv.slice(2);
-  performSort(userArgs, fileOperations, IOInterface, showOutput);
+  performSort(userArgs, readFile, IOInterface, showOutput);
 };
 
 main();
