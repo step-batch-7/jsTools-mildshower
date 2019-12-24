@@ -9,9 +9,9 @@ const parse = function(userArgs) {
   return { filePath, isInputValid: true };
 };
 
-const performSort = function(userArgs, helperFuncs, onCompletion) {
+const performSort = function(userArgs, fileOperations, onCompletion) {
   const parsedArgs = parse(userArgs);
-  const { reader, doesExist } = helperFuncs;
+  const { reader, doesExist } = fileOperations;
   if (parsedArgs.isInputValid) {
     if (!doesExist(parsedArgs.filePath)) {
       onCompletion({

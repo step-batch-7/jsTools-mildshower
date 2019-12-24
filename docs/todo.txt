@@ -13,11 +13,11 @@ v-0.1
 			--done-- performSort()						 //that contains the sorting code and acts as a pseudo main
 
 v-0.2
-	node sort.js file1 file2
+	node sort.js
 
 	modification:
-		parse()   //now parse will give filePaths in an array
-		loadFileLines()  //now it will load all files' lines
+		parse()   //now parse will check whether the file is given or not
+		performSort()  //now it will decide whether to go for file or stdin
 
-	implementation:
-		doAllFilesExist()   //a separate function to check whether all given filePaths are valid or not
+	Implement:
+		loadStdInLines()  //that will use io interface and take lines from user

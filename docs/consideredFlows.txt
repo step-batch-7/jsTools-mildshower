@@ -2,8 +2,8 @@ SORT FLOW:
 
 Features:
 1.  node sort.js file 
-2.  node sort.js file1 file2
-3.  node sort.js
+2.  node sort.js
+3.  node sort.js file1 file2
 4.  cat file | node sort.js
 
 5.  node sort.js -r file 
