@@ -9,7 +9,7 @@ const callOnError = function(error, callBack) {
     ENOENT: "sort: No such file or directory",
     EISDIR: "sort: Is a directory"
   };
-  callBack({ errorMsg: errorMsgs[error.code], exitCode: 2 });
+  callBack({ errorMsg: errorMsgs[error.code] });
 };
 
 const loadStreamLines = function(inputStream, onCompletion) {
@@ -21,13 +21,12 @@ const loadStreamLines = function(inputStream, onCompletion) {
   inputStream.on("end", () => onCompletion({ lines: content.split("\n") }));
 };
 
-const sortLines = function(loadedContent, onCompletion) {
+const sortLines = function(loadedContent) {
   if (loadedContent.errorMsg) {
-    onCompletion({ errorMsg: loadedContent.errorMsg, exitCode: 2 });
-    return;
+    return { errorMsg: loadedContent.errorMsg, exitCode: 2 };
   }
   const sortedLines = loadedContent.lines.sort();
-  onCompletion({ sortedContent: sortedLines.join("\n"), exitCode: 0 });
+  return { sortedContent: sortedLines.join("\n"), exitCode: 0 };
 };
 
 const performSort = function(userArgs, getReadStream, stdin, onCompletion) {
@@ -38,7 +37,7 @@ const performSort = function(userArgs, getReadStream, stdin, onCompletion) {
       inputStream = getReadStream(parsedArgs.filePath);
     }
     loadStreamLines(inputStream, loadedContent => {
-      sortLines(loadedContent, onCompletion);
+      onCompletion(sortLines(loadedContent));
     });
   }
 };
