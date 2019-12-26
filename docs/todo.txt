@@ -23,4 +23,4 @@ v-0.2
 		--done-- loadStdInLines()  //that will use io interface and take lines from user
 
 	send:
-		sending IO interface from main to other functions
+		--done-- sending IO interface from main to other functions

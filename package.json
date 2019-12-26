@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "nyc mocha",
-    "testApp": "./runAppTests appTests/*.tst"
+    "testApp": "./runAppTests appTests/*.tst",
+    "testAll": "nyc mocha && ./runAppTests appTests/*.tst"
   },
   "repository": {
     "type": "git",
