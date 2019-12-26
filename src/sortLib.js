@@ -1,28 +1,24 @@
-const loadFileLines = function(filePath, reader, onCompletion) {
-  const errorMsgs = {
-    EACCES: "sort: Permission denied",
-    ENOENT: "sort: No such file or directory",
-    EISDIR: "sort: Is a directory"
-  };
-  reader(filePath, "utf8", (error, content) => {
-    if (error) {
-      onCompletion({ errorMsg: errorMsgs[error.code] });
-      return;
-    }
-    onCompletion({ lines: content.split("\n") });
-  });
-};
-
 const parse = function(userArgs) {
   const [filePath] = userArgs;
   return { filePath, isInputValid: true };
 };
 
-const loadStdInLines = function(IOInterface, onCompletion) {
+const callOnError = function(error, callBack) {
+  const errorMsgs = {
+    EACCES: "sort: Permission denied",
+    ENOENT: "sort: No such file or directory",
+    EISDIR: "sort: Is a directory"
+  };
+  callBack({ errorMsg: errorMsgs[error.code], exitCode: 2 });
+};
+
+const loadStreamLines = function(inputStream, onCompletion) {
   let content = "";
-  IOInterface.resume();
-  IOInterface.on("data", data => (content += data));
-  IOInterface.on("end", () => onCompletion({ lines: content.split("\n") }));
+  inputStream.on("data", data => (content += data));
+  inputStream.on("error", error => {
+    callOnError(error, onCompletion);
+  });
+  inputStream.on("end", () => onCompletion({ lines: content.split("\n") }));
 };
 
 const sortLines = function(loadedContent, onCompletion) {
@@ -34,24 +30,21 @@ const sortLines = function(loadedContent, onCompletion) {
   onCompletion({ sortedContent: sortedLines.join("\n"), exitCode: 0 });
 };
 
-const performSort = function(userArgs, reader, IOInterface, onCompletion) {
+const performSort = function(userArgs, getReadStream, stdin, onCompletion) {
   const parsedArgs = parse(userArgs);
   if (parsedArgs.isInputValid) {
+    let inputStream = stdin;
     if (parsedArgs.filePath) {
-      loadFileLines(parsedArgs.filePath, reader, loadedContent => {
-        sortLines(loadedContent, onCompletion);
-      });
-      return;
+      inputStream = getReadStream(parsedArgs.filePath);
     }
-    loadStdInLines(IOInterface, loadedContent => {
+    loadStreamLines(inputStream, loadedContent => {
       sortLines(loadedContent, onCompletion);
     });
   }
 };
 
 module.exports = {
-  loadFileLines,
   parse,
   performSort,
-  loadStdInLines
+  loadStreamLines
 };

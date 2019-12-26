@@ -1,5 +1,4 @@
-const { createInterface } = require("readline");
-const { readFile } = require("fs");
+const { createReadStream } = require("fs");
 const { performSort } = require("./src/sortLib");
 
 const showOutput = function(sortOutput) {
@@ -10,7 +9,7 @@ const showOutput = function(sortOutput) {
 
 const main = function() {
   const userArgs = process.argv.slice(2);
-  performSort(userArgs, readFile, process.stdin, showOutput);
+  performSort(userArgs, createReadStream, process.stdin, showOutput);
 };
 
 main();

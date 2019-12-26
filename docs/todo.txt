@@ -24,3 +24,6 @@ v-0.2
 
 	send:
 		--done-- sending IO interface from main to other functions
+
+	--done-- merged stdin and file input using fileStream
+	--done-- single function that handles both the streams

@@ -1,67 +1,6 @@
 const events = require("events");
 const { assert } = require("chai");
-const {
-  loadFileLines,
-  parse,
-  performSort,
-  loadStdInLines
-} = require("../src/sortLib");
-
-describe("#loadFileLines()", function() {
-  it("should pass the fileLines of given file path to the callBack", function() {
-    const callBack = function(content) {
-      assert.deepStrictEqual(content, { lines: ["line1", "line2", "line3"] });
-    };
-    const reader = function(filePath, encoding, callBack) {
-      assert.strictEqual(filePath, "./file");
-      assert.strictEqual(encoding, "utf8");
-      callBack(null, "line1\nline2\nline3");
-    };
-    loadFileLines("./file", reader, callBack);
-  });
-
-  it("should pass errorMsg to the callBack if filePath is incorrect", function() {
-    const callBack = function(content) {
-      assert.deepStrictEqual(content, {
-        errorMsg: "sort: No such file or directory"
-      });
-    };
-    const reader = function(filePath, encoding, callBack) {
-      assert.strictEqual(filePath, "./file");
-      assert.strictEqual(encoding, "utf8");
-      callBack({ code: "ENOENT" });
-    };
-    loadFileLines("./file", reader, callBack);
-  });
-
-  it("should pass errorMsg to the callBack if filePath the path to a directory", function() {
-    const callBack = function(content) {
-      assert.deepStrictEqual(content, {
-        errorMsg: "sort: Is a directory"
-      });
-    };
-    const reader = function(filePath, encoding, callBack) {
-      assert.strictEqual(filePath, "./file");
-      assert.strictEqual(encoding, "utf8");
-      callBack({ code: "EISDIR" });
-    };
-    loadFileLines("./file", reader, callBack);
-  });
-
-  it("should pass errorMsg to the callBack if permission denied for file reading", function() {
-    const callBack = function(content) {
-      assert.deepStrictEqual(content, {
-        errorMsg: "sort: Permission denied"
-      });
-    };
-    const reader = function(filePath, encoding, callBack) {
-      assert.strictEqual(filePath, "./file");
-      assert.strictEqual(encoding, "utf8");
-      callBack({ code: "EACCES" });
-    };
-    loadFileLines("./file", reader, callBack);
-  });
-});
+const { parse, performSort, loadStreamLines } = require("../src/sortLib");
 
 describe("#parse()", function() {
   it("should parse the user given args and give needed properties for sort and input validation", function() {
@@ -90,27 +29,69 @@ describe("#performSort", function() {
       });
     };
 
-    const reader = function(filePath, encoding, callBack) {
+    const fileStream = new events();
+
+    const createReadStream = function(filePath) {
       assert.strictEqual(filePath, "./file");
-      assert.strictEqual(encoding, "utf8");
-      callBack(null, "line1\nline2\nline3");
+      return fileStream;
     };
-    performSort(["./file"], reader, null, callBack);
+    performSort(["./file"], createReadStream, null, callBack);
+    fileStream.emit("data", "line1\nline2\nline3");
+    fileStream.emit("end");
   });
 
-  it("should pass error flag and error to callBack if the file in user args does not exist", function() {
+  it("should pass error flag and error to callBack if the given file does not exist", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
         errorMsg: "sort: No such file or directory",
         exitCode: 2
       });
     };
-    const reader = function(filePath, encoding, callBack) {
+
+    const fileStream = new events();
+
+    const createReadStream = function(filePath) {
       assert.strictEqual(filePath, "./file");
-      assert.strictEqual(encoding, "utf8");
-      callBack({ code: "ENOENT" });
+      return fileStream;
     };
-    performSort(["./file"], reader, null, callBack);
+    performSort(["./file"], createReadStream, null, callBack);
+    fileStream.emit("error", { code: "ENOENT" });
+  });
+
+  it("should pass error flag and error to callBack if the given file does not have read permission", function() {
+    const callBack = function(sortOutput) {
+      assert.deepStrictEqual(sortOutput, {
+        errorMsg: "sort: Permission denied",
+        exitCode: 2
+      });
+    };
+
+    const fileStream = new events();
+
+    const createReadStream = function(filePath) {
+      assert.strictEqual(filePath, "./file");
+      return fileStream;
+    };
+    performSort(["./file"], createReadStream, null, callBack);
+    fileStream.emit("error", { code: "EACCES" });
+  });
+
+  it("should pass error flag and error to callBack if the given path is a dirPath", function() {
+    const callBack = function(sortOutput) {
+      assert.deepStrictEqual(sortOutput, {
+        errorMsg: "sort: Is a directory",
+        exitCode: 2
+      });
+    };
+
+    const fileStream = new events();
+
+    const createReadStream = function(filePath) {
+      assert.strictEqual(filePath, "./file");
+      return fileStream;
+    };
+    performSort(["./file"], createReadStream, null, callBack);
+    fileStream.emit("error", { code: "EISDIR" });
   });
 
   it("should pass sorted content from stdIn interface if no filePath is given", function() {
@@ -123,7 +104,6 @@ describe("#performSort", function() {
       count++;
     };
     const interface = new events();
-    interface.resume = () => {};
     performSort([], () => {}, interface, callBack);
     interface.emit("data", "line3\n");
     interface.emit("data", "line1\n");
@@ -133,16 +113,15 @@ describe("#performSort", function() {
   });
 });
 
-describe("#loadStdInLines()", function() {
+describe("#loadStreamLines()", function() {
   it("should take lines on line event of the given interface and send all lines to the callBack", function() {
     let count = 0;
     const interface = new events();
-    interface.resume = () => {};
     const callBack = function(lines) {
       assert.deepStrictEqual(lines, { lines: ["line1", "line2", "line3"] });
       count++;
     };
-    loadStdInLines(interface, callBack);
+    loadStreamLines(interface, callBack);
     interface.emit("data", "line1\n");
     interface.emit("data", "line2\n");
     interface.emit("data", "line3");
