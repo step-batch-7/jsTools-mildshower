@@ -85,7 +85,8 @@ describe("#performSort", function() {
   it("should sort a file and pass result to callBack when file is given and file exists", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        sortedContent: "line1\nline2\nline3"
+        sortedContent: "line1\nline2\nline3",
+        exitCode: 0
       });
     };
 
@@ -100,7 +101,8 @@ describe("#performSort", function() {
   it("should pass error flag and error to callBack if the file in user args does not exist", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        errorMsg: "sort: No such file or directory"
+        errorMsg: "sort: No such file or directory",
+        exitCode: 2
       });
     };
     const reader = function(filePath, encoding, callBack) {
@@ -115,7 +117,8 @@ describe("#performSort", function() {
     let count = 0;
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        sortedContent: "line1\nline2\nline3"
+        sortedContent: "line1\nline2\nline3",
+        exitCode: 0
       });
       count++;
     };

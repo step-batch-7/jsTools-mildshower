@@ -27,11 +27,11 @@ const loadStdInLines = function(IOInterface, onCompletion) {
 
 const sortLines = function(loadedContent, onCompletion) {
   if (loadedContent.errorMsg) {
-    onCompletion({ errorMsg: loadedContent.errorMsg });
+    onCompletion({ errorMsg: loadedContent.errorMsg, exitCode: 2 });
     return;
   }
   const sortedLines = loadedContent.lines.sort();
-  onCompletion({ sortedContent: sortedLines.join("\n") });
+  onCompletion({ sortedContent: sortedLines.join("\n"), exitCode: 0 });
 };
 
 const performSort = function(userArgs, reader, IOInterface, onCompletion) {
