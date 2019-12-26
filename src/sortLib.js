@@ -19,10 +19,10 @@ const parse = function(userArgs) {
 };
 
 const loadStdInLines = function(IOInterface, onCompletion) {
-  const lines = [];
+  let content = "";
   IOInterface.resume();
-  IOInterface.on("line", line => lines.push(line));
-  IOInterface.on("close", () => onCompletion({ lines }));
+  IOInterface.on("data", data => (content += data));
+  IOInterface.on("end", () => onCompletion({ lines: content.split("\n") }));
 };
 
 const sortLines = function(loadedContent, onCompletion) {

@@ -9,10 +9,8 @@ const showOutput = function(sortOutput) {
 };
 
 const main = function() {
-  const IOInterface = createInterface(process.stdin);
-  IOInterface.pause();
   const userArgs = process.argv.slice(2);
-  performSort(userArgs, readFile, IOInterface, showOutput);
+  performSort(userArgs, readFile, process.stdin, showOutput);
 };
 
 main();
