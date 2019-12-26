@@ -21,29 +21,34 @@ const loadStreamLines = function(inputStream, onCompletion) {
   inputStream.on("end", () => onCompletion({ lines: content.split("\n") }));
 };
 
-const sortContent = function(loadedContent) {
-  if (loadedContent.errorMsg) {
-    return { errorMsg: loadedContent.errorMsg, exitCode: 2 };
-  }
-  const sortedLines = loadedContent.lines.sort();
-  return { sortedContent: sortedLines.join("\n"), exitCode: 0 };
+const getFileStream = function(filePath, createFileStream) {
+  return createFileStream(filePath);
 };
 
-const performSort = function(userArgs, getReadStream, stdin, onCompletion) {
+const performSort = function(userArgs, createFileStream, stdin, onCompletion) {
   const parsedArgs = parse(userArgs);
   if (parsedArgs.isInputValid) {
     let inputStream = stdin;
     if (parsedArgs.filePath) {
-      inputStream = getReadStream(parsedArgs.filePath);
+      inputStream = getFileStream(parsedArgs.filePath, createFileStream);
     }
-    loadStreamLines(inputStream, loadedContent => {
-      onCompletion(sortContent(loadedContent));
-    });
+
+    const sortContent = function(loadedContent) {
+      if (loadedContent.errorMsg) {
+        onCompletion({ errorMsg: loadedContent.errorMsg, exitCode: 2 });
+        return;
+      }
+      const sortedLines = loadedContent.lines.sort();
+      onCompletion({ sortedContent: sortedLines.join("\n"), exitCode: 0 });
+    };
+
+    loadStreamLines(inputStream, sortContent);
   }
 };
 
 module.exports = {
   parse,
   performSort,
-  loadStreamLines
+  loadStreamLines,
+  getFileStream
 };

@@ -1,6 +1,11 @@
 const events = require("events");
 const { assert } = require("chai");
-const { parse, performSort, loadStreamLines } = require("../src/sortLib");
+const {
+  parse,
+  performSort,
+  loadStreamLines,
+  getFileStream
+} = require("../src/sortLib");
 
 describe("#parse()", function() {
   it("should parse the user given args and give needed properties for sort and input validation", function() {
@@ -17,6 +22,19 @@ describe("#parse()", function() {
       filePath: undefined,
       isInputValid: true
     });
+  });
+});
+
+describe("#getFileStream()", function() {
+  it("should return a file read stream for the given file path", function() {
+    const createFileStream = function(filePath) {
+      assert.strictEqual(filePath, "./file");
+      return "fileStream";
+    };
+    assert.deepStrictEqual(
+      getFileStream("./file", createFileStream),
+      "fileStream"
+    );
   });
 });
 
