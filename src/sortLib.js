@@ -21,7 +21,7 @@ const loadStreamLines = function(inputStream, onCompletion) {
   inputStream.on("end", () => onCompletion({ lines: content.split("\n") }));
 };
 
-const sortLines = function(loadedContent) {
+const sortContent = function(loadedContent) {
   if (loadedContent.errorMsg) {
     return { errorMsg: loadedContent.errorMsg, exitCode: 2 };
   }
@@ -37,7 +37,7 @@ const performSort = function(userArgs, getReadStream, stdin, onCompletion) {
       inputStream = getReadStream(parsedArgs.filePath);
     }
     loadStreamLines(inputStream, loadedContent => {
-      onCompletion(sortLines(loadedContent));
+      onCompletion(sortContent(loadedContent));
     });
   }
 };
