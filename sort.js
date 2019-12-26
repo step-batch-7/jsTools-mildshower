@@ -3,8 +3,8 @@ const { readFile } = require("fs");
 const { performSort } = require("./src/sortLib");
 
 const showOutput = function(sortOutput) {
-  sortOutput.errorMsg && console.error(sortOutput.errorMsg);
-  sortOutput.sortedContent && console.log(sortOutput.sortedContent);
+  sortOutput.errorMsg && process.stderr.write(sortOutput.errorMsg);
+  sortOutput.sortedContent && process.stdout.write(sortOutput.sortedContent);
 };
 
 const main = function() {
