@@ -9,11 +9,11 @@ const performSort = function(userArgs, createFileStream, stdin, onCompletion) {
     }
     loadStreamLines(inputStream, loadedContent => {
       if (loadedContent.errorMsg) {
-        onCompletion({ errorMsg: loadedContent.errorMsg, exitCode: 2 });
+        onCompletion({ errorMsg: loadedContent.errorMsg });
         return;
       }
       const sortedLines = loadedContent.lines.sort();
-      onCompletion({ sortedContent: sortedLines.join("\n"), exitCode: 0 });
+      onCompletion({ sortedContent: sortedLines.join("\n") });
     });
   }
 };

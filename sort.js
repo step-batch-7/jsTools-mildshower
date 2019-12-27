@@ -2,9 +2,10 @@ const { createReadStream } = require("fs");
 const performSort = require("./src/performSort");
 
 const showOutput = function(sortOutput) {
-  sortOutput.errorMsg && console.error(sortOutput.errorMsg);
-  sortOutput.sortedContent && console.log(sortOutput.sortedContent);
-  process.exit(sortOutput.exitCode);
+  if (sortOutput.errorMsg) {
+    console.error(sortOutput.errorMsg);
+    process.exitCode = 2;
+  } else console.log(sortOutput.sortedContent);
 };
 
 const main = function() {

@@ -6,8 +6,7 @@ describe("#performSort", function() {
   it("should sort a file and pass result to callBack when file is given and file exists", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        sortedContent: "line1\nline2\nline3",
-        exitCode: 0
+        sortedContent: "line1\nline2\nline3"
       });
     };
 
@@ -26,8 +25,7 @@ describe("#performSort", function() {
   it("should pass error flag and error to callBack if the given file does not exist", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        errorMsg: "sort: No such file or directory",
-        exitCode: 2
+        errorMsg: "sort: No such file or directory"
       });
     };
 
@@ -45,8 +43,7 @@ describe("#performSort", function() {
   it("should pass error flag and error to callBack if the given file does not have read permission", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        errorMsg: "sort: Permission denied",
-        exitCode: 2
+        errorMsg: "sort: Permission denied"
       });
     };
 
@@ -64,8 +61,7 @@ describe("#performSort", function() {
   it("should pass error flag and error to callBack if the given path is a dirPath", function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        errorMsg: "sort: Is a directory",
-        exitCode: 2
+        errorMsg: "sort: Is a directory"
       });
     };
 
@@ -84,8 +80,7 @@ describe("#performSort", function() {
     let count = 0;
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        sortedContent: "line1\nline2\nline3",
-        exitCode: 0
+        sortedContent: "line1\nline2\nline3"
       });
       count++;
     };
