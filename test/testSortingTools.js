@@ -1,17 +1,13 @@
 const stream = require("stream");
 const { assert } = require("chai");
-const {
-  parse,
-  loadStreamLines,
-  getFileStream
-} = require("../src/sortingTools");
+const { parse, loadStreamLines } = require("../src/sortingTools");
 
 describe("#parse()", function() {
   it("should parse the user given args and give needed properties for sort and input validation", function() {
     const actualValue = parse(["./file"]);
     assert.deepStrictEqual(actualValue, {
       filePath: "./file",
-      isInputValid: true
+      areOptionsInvalid: false
     });
   });
 
@@ -19,21 +15,8 @@ describe("#parse()", function() {
     const actualValue = parse([]);
     assert.deepStrictEqual(actualValue, {
       filePath: undefined,
-      isInputValid: true
+      areOptionsInvalid: false
     });
-  });
-});
-
-describe("#getFileStream()", function() {
-  it("should return a file read stream for the given file path", function() {
-    const createFileStream = function(filePath) {
-      assert.strictEqual(filePath, "./file");
-      return "fileStream";
-    };
-    assert.deepStrictEqual(
-      getFileStream("./file", createFileStream),
-      "fileStream"
-    );
   });
 });
 
