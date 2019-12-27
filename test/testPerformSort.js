@@ -1,4 +1,4 @@
-const events = require("events");
+const stream = require("stream");
 const { assert } = require("chai");
 const performSort = require("../src/performSort");
 
@@ -11,7 +11,8 @@ describe("#performSort", function() {
       });
     };
 
-    const fileStream = new events();
+    const fileStream = new stream.Readable();
+    fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
       assert.strictEqual(filePath, "./file");
@@ -30,7 +31,8 @@ describe("#performSort", function() {
       });
     };
 
-    const fileStream = new events();
+    const fileStream = new stream.Readable();
+    fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
       assert.strictEqual(filePath, "./file");
@@ -48,7 +50,8 @@ describe("#performSort", function() {
       });
     };
 
-    const fileStream = new events();
+    const fileStream = new stream.Readable();
+    fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
       assert.strictEqual(filePath, "./file");
@@ -66,7 +69,8 @@ describe("#performSort", function() {
       });
     };
 
-    const fileStream = new events();
+    const fileStream = new stream.Readable();
+    fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
       assert.strictEqual(filePath, "./file");
@@ -85,12 +89,13 @@ describe("#performSort", function() {
       });
       count++;
     };
-    const interface = new events();
-    performSort([], () => {}, interface, callBack);
-    interface.emit("data", "line3\n");
-    interface.emit("data", "line1\n");
-    interface.emit("data", "line2");
-    interface.emit("end");
+    const mockedStdin = new stream.Readable();
+    mockedStdin._read = () => {};
+    performSort([], () => {}, mockedStdin, callBack);
+    mockedStdin.emit("data", "line3\n");
+    mockedStdin.emit("data", "line1\n");
+    mockedStdin.emit("data", "line2");
+    mockedStdin.emit("end");
     assert.equal(count, 1);
   });
 });
