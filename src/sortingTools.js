@@ -14,7 +14,10 @@ const loadStreamLines = function(inputStream, onCompletion) {
     onCompletion({ errorMsg: errorMsgs[error.code] });
   });
   inputStream.on("data", data => (content += data));
-  inputStream.on("end", () => onCompletion({ lines: content.split("\n") }));
+  inputStream.on("end", () => {
+    const lines = content.replace(/\n$/, "").split("\n");
+    onCompletion({ lines });
+  });
 };
 
 const getFileStream = function(filePath, createFileStream) {
