@@ -1,12 +1,12 @@
-const stream = require("stream");
-const { assert } = require("chai");
-const performSort = require("../src/performSort");
+const stream = require('stream');
+const { assert } = require('chai');
+const performSort = require('../src/performSort');
 
-describe("#performSort", function() {
-  it("should sort a file and pass result to callBack when file is given and file exists", function() {
+describe('#performSort', function() {
+  it('should sort a valid file and give lines to callback', function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        sortedContent: "line1\nline2\nline3"
+        sortedContent: 'line1\nline2\nline3'
       });
     };
 
@@ -14,18 +14,18 @@ describe("#performSort", function() {
     fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
-      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(filePath, './file');
       return fileStream;
     };
-    performSort(["./file"], createReadStream, null, callBack);
-    fileStream.emit("data", "line1\nline2\nline3");
-    fileStream.emit("end");
+    performSort(['./file'], createReadStream, null, callBack);
+    fileStream.emit('data', 'line1\nline2\nline3');
+    fileStream.emit('end');
   });
 
-  it("should pass error flag and error to callBack if the given file does not exist", function() {
+  it('should produce error for a non-existing file', function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        errorMsg: "sort: No such file or directory"
+        errorMsg: 'sort: No such file or directory'
       });
     };
 
@@ -33,17 +33,17 @@ describe("#performSort", function() {
     fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
-      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(filePath, './file');
       return fileStream;
     };
-    performSort(["./file"], createReadStream, null, callBack);
-    fileStream.emit("error", { code: "ENOENT" });
+    performSort(['./file'], createReadStream, null, callBack);
+    fileStream.emit('error', { code: 'ENOENT' });
   });
 
-  it("should pass error flag and error to callBack if the given file does not have read permission", function() {
+  it('should produce error for file not having read permission', function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        errorMsg: "sort: Permission denied"
+        errorMsg: 'sort: Permission denied'
       });
     };
 
@@ -51,17 +51,17 @@ describe("#performSort", function() {
     fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
-      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(filePath, './file');
       return fileStream;
     };
-    performSort(["./file"], createReadStream, null, callBack);
-    fileStream.emit("error", { code: "EACCES" });
+    performSort(['./file'], createReadStream, null, callBack);
+    fileStream.emit('error', { code: 'EACCES' });
   });
 
-  it("should pass error flag and error to callBack if the given path is a dirPath", function() {
+  it('should produce error for path of a directory', function() {
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        errorMsg: "sort: Is a directory"
+        errorMsg: 'sort: Is a directory'
       });
     };
 
@@ -69,28 +69,28 @@ describe("#performSort", function() {
     fileStream._read = () => {};
 
     const createReadStream = function(filePath) {
-      assert.strictEqual(filePath, "./file");
+      assert.strictEqual(filePath, './file');
       return fileStream;
     };
-    performSort(["./file"], createReadStream, null, callBack);
-    fileStream.emit("error", { code: "EISDIR" });
+    performSort(['./file'], createReadStream, null, callBack);
+    fileStream.emit('error', { code: 'EISDIR' });
   });
 
-  it("should pass sorted content from stdIn interface if no filePath is given", function() {
+  it('should sort stdin content when filePath is not given', () => {
     let count = 0;
     const callBack = function(sortOutput) {
       assert.deepStrictEqual(sortOutput, {
-        sortedContent: "line1\nline2\nline3"
+        sortedContent: 'line2\nline3'
       });
       count++;
     };
     const mockedStdin = new stream.Readable();
     mockedStdin._read = () => {};
     performSort([], () => {}, mockedStdin, callBack);
-    mockedStdin.emit("data", "line3\n");
-    mockedStdin.emit("data", "line1\n");
-    mockedStdin.emit("data", "line2");
-    mockedStdin.emit("end");
-    assert.equal(count, 1);
+    mockedStdin.emit('data', 'line3\n');
+    mockedStdin.emit('data', 'line2');
+    mockedStdin.emit('end');
+    const calledCount = 1;
+    assert.equal(count, calledCount);
   });
 });

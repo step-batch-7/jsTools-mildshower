@@ -1,17 +1,17 @@
-const stream = require("stream");
-const { assert } = require("chai");
-const { parse, loadStreamLines } = require("../src/sortingTools");
+const stream = require('stream');
+const { assert } = require('chai');
+const { parse, loadStreamLines } = require('../src/sortingTools');
 
-describe("#parse()", function() {
-  it("should parse the user given args and give needed properties for sort and input validation", function() {
-    const actualValue = parse(["./file"]);
+describe('#parse()', function() {
+  it('should parse userArgs and give sortOptions with input validity', () => {
+    const actualValue = parse(['./file']);
     assert.deepStrictEqual(actualValue, {
-      filePath: "./file",
+      filePath: './file',
       areOptionsInvalid: false
     });
   });
 
-  it("should give filePath as undefined if no filePath is given", function() {
+  it('should give filePath as undefined if no filePath is given', function() {
     const actualValue = parse([]);
     assert.deepStrictEqual(actualValue, {
       filePath: undefined,
@@ -20,20 +20,20 @@ describe("#parse()", function() {
   });
 });
 
-describe("#loadStreamLines()", function() {
-  it("should take lines on line event of the given interface and send all lines to the callBack", function() {
+describe('#loadStreamLines()', function() {
+  it('should pile data on data event and send lines to callBack', function() {
     let count = 0;
     const interface = new stream.Readable();
     interface._read = () => {};
     const callBack = function(lines) {
-      assert.deepStrictEqual(lines, { lines: ["line1", "line2", "line3"] });
+      assert.deepStrictEqual(lines, { lines: ['line1', 'line3'] });
       count++;
     };
     loadStreamLines(interface, callBack);
-    interface.emit("data", "line1\n");
-    interface.emit("data", "line2\n");
-    interface.emit("data", "line3");
-    interface.emit("end");
-    assert.equal(count, 1);
+    interface.emit('data', 'line1\n');
+    interface.emit('data', 'line3');
+    interface.emit('end');
+    const calledCount = 1;
+    assert.equal(count, calledCount);
   });
 });

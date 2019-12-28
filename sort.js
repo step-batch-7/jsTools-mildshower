@@ -1,15 +1,16 @@
-const { createReadStream } = require("fs");
-const performSort = require("./src/performSort");
+const { createReadStream } = require('fs');
+const {stdout, stderr} = process;
+const performSort = require('./src/performSort');
 
 const showOutput = function(sortOutput) {
   if (sortOutput.errorMsg) {
-    console.error(sortOutput.errorMsg);
+    stderr.write(sortOutput.errorMsg + '\n');
     process.exitCode = 2;
-  } else console.log(sortOutput.sortedContent);
+  } else {stdout.write(sortOutput.sortedContent + '\n');}
 };
 
 const main = function() {
-  const userArgs = process.argv.slice(2);
+  const [,, ...userArgs] = process.argv;
   performSort(userArgs, createReadStream, process.stdin, showOutput);
 };
 
