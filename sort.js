@@ -6,7 +6,9 @@ const showOutput = function(sortOutput) {
   if (sortOutput.errorMsg) {
     stderr.write(sortOutput.errorMsg + '\n');
     process.exitCode = 2;
-  } else {stdout.write(sortOutput.sortedContent + '\n');}
+    return;
+  } 
+  stdout.write(sortOutput.sortedContent + '\n');
 };
 
 const main = function() {

@@ -17,7 +17,7 @@ v-0.2
 
 	modification:
 		--done-- parse()   //now parse will check whether the file is given or not
-		--sone-- performSort()  //now it will decide whether to go for file or stdin
+		--done-- performSort()  //now it will decide whether to go for file or stdin
 
 	Implement:
 		--done-- loadStdInLines()  //that will use io interface and take lines from user
@@ -27,3 +27,14 @@ v-0.2
 
 	--done-- merged stdin and file input using fileStream
 	--done-- single function that handles both the streams
+
+
+v-0.3
+	node sort.js -r
+
+	Implementation:
+		sortLines()			//A separate sorting function that will take options and lines and will sort accordingly
+
+	modification:
+		parse()			//parser should be smart enough to detect -r option
+		performSort()  //now it should be able to act for reverse sorting
