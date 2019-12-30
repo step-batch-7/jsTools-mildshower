@@ -9,9 +9,8 @@ const performSort = function(userArgs, createFileStream, stdin, onCompletion) {
   const inputStream = filePath ? createFileStream(filePath) : stdin;
 
   const finishCallback = ({ errorMsg, lines }) => {
-    let result;
-    if (errorMsg) {result = { errorMsg };}
-    else {result = { sortedContent: lines.sort().join('\n') };}
+    let result = {errorMsg};
+    if (lines) {result = {sortedContent: lines.sort().join('\n')};}
     onCompletion(result);
   };
 
