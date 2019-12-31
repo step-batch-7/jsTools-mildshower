@@ -2,9 +2,7 @@ const { parse, loadStreamLines } = require('./sortingTools');
 
 const performSort = function(userArgs, createFileStream, stdin, onCompletion) {
   const { areOptionsInvalid, filePath } = parse(userArgs);
-  if (areOptionsInvalid) {
-    return;
-  }
+  if (areOptionsInvalid) {return;}
 
   const inputStream = filePath ? createFileStream(filePath) : stdin;
 

@@ -1,5 +1,5 @@
-const stream = require('stream');
 const { assert } = require('chai');
+const sinon = require('sinon');
 const { parse, loadStreamLines } = require('../src/sortingTools');
 
 describe('#parse()', function() {
@@ -21,19 +21,26 @@ describe('#parse()', function() {
 });
 
 describe('#loadStreamLines()', function() {
-  it('should pile data on data event and send lines to callBack', function() {
-    let count = 0;
-    const interface = new stream.Readable();
-    interface._read = () => {};
-    const callBack = function(lines) {
-      assert.deepStrictEqual(lines, { lines: ['line1', 'line3'] });
-      count++;
-    };
+  it('should pile data from stream and send lines to callBack', function(done) {
+    const interface = {on: () => {}};
+    sinon.spy(interface);
+    const callBack = sinon.spy();
     loadStreamLines(interface, callBack);
-    interface.emit('data', 'line1\n');
-    interface.emit('data', 'line3');
-    interface.emit('end');
-    const calledCount = 1;
-    assert.equal(count, calledCount);
+    interface.on.withArgs('data').yield('line1\n');
+    interface.on.withArgs('data').yield('line3');
+    interface.on.withArgs('end').yield();
+    sinon.assert.calledOnceWithExactly(callBack, { lines: ['line1', 'line3'] });
+    done();
+  });
+	
+  it('should give errorMsg to callBack if error is emitted', function(done) {
+    const interface = {on: () => {}};
+    sinon.spy(interface);
+    const callBack = sinon.spy();
+    loadStreamLines(interface, callBack);
+    interface.on.withArgs('error').yield({code: 'EACCES'});
+    const expected =  { errorMsg: 'sort: Permission denied' };
+    sinon.assert.calledOnceWithExactly(callBack, expected);
+    done();
   });
 });
