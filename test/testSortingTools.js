@@ -21,6 +21,7 @@ describe('#parse()', function() {
 });
 
 describe('#loadStreamLines()', function() {
+  this.afterEach(() => sinon.restore());
   it('should pile data from stream and send lines to callBack', function(done) {
     const interface = {on: () => {}};
     sinon.spy(interface);
