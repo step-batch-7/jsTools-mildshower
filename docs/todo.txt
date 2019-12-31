@@ -33,8 +33,19 @@ v-0.3
 	node sort.js -r
 
 	Implementation:
-		sortLines()			//A separate sorting function that will take options and lines and will sort accordingly
+		sortLines()			//A separate sorting function that can also handle reverse sorting
 
 	modification:
 		parse()			//parser should be smart enough to detect -r option
 		performSort()  //now it should be able to act for reverse sorting
+
+
+	--test async function using done()
+	--introduce sinon mocking
+	--add invalid input error in performSort() for error occurred by invalid option input
+	--modify parse() for detection of reverse option taking help of a reducer function that will reduce through the command line args
+	--Implement sortLines() separate function to sort lines considering reverse option also. //it will check if reverse option is there or not
+	--link new sortLines() function to performSort so that previous versions and current version work fine
+	--implement a reducer function to reduce through all command lines args
+	--improve the naming of sortTools lib
+	--add appTests to test features of the current version
