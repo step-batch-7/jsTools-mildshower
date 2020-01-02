@@ -48,8 +48,6 @@ describe('#parse()', function() {
 	
   it('should state invalid args if invalid option is present', function() {
     const actualValue = parse(['-z', '-r', './file']);
-    assert.deepStrictEqual(actualValue, {
-      areOptionsInvalid: true
-    });
+    assert.include(actualValue, { areOptionsInvalid: true });
   });
 });

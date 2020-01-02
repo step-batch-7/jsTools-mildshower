@@ -2,11 +2,6 @@ const optionNames = {
   '-r': 'reverse'
 };
 
-const isValidOption = function(option) {
-  const options = Object.keys(optionNames);
-  return options.includes(option);
-};
-
 const actOnEachArg = function(preProperties, currArg) {
   if(preProperties.areOptionsInvalid) {
     return preProperties;
@@ -17,12 +12,8 @@ const actOnEachArg = function(preProperties, currArg) {
     return preProperties;
   }
 	
-  if(!isValidOption(currArg)) {
-    return {areOptionsInvalid: true};
-  }
-	
-  const optionName = optionNames[currArg];
-  preProperties[optionName] = true;
+  const optionToUpdate = optionNames[currArg] || 'areOptionsInvalid';
+  preProperties[optionToUpdate] = true;
   return preProperties;
 };
 
