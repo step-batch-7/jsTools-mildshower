@@ -1,7 +1,7 @@
 const sinon = require('sinon');
 const performSort = require('../src/performSort');
 
-describe('#performSort', function() {
+describe('#performSort()', function() {
   this.afterEach(() => sinon.restore());
   it('should sort a valid file and give lines to callback', function() {
     const callBack = sinon.spy();

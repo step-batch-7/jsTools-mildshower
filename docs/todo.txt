@@ -43,7 +43,8 @@ v-0.3
 	--done--test async function using done()
 	--done--introduce sinon mocking
 	--add invalid input error in performSort() for error occurred by invalid option input
-	--modify parse() for detection of reverse option taking help of a reducer function that will reduce through the command line args
+	--done--modify parse() for detection of reverse option taking help of a reducer function that will reduce through the command line args
+	--modify parse() to detect invalid option
 	--Implement sortLines() separate function to sort lines considering reverse option also. //it will check if reverse option is there or not
 	--link new sortLines() function to performSort so that previous versions and current version work fine
 	--implement a reducer function to reduce through all command lines args
