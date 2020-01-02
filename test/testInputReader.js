@@ -1,24 +1,5 @@
-const { assert } = require('chai');
 const sinon = require('sinon');
-const { parse, loadStreamLines } = require('../src/sortingTools');
-
-describe('#parse()', function() {
-  it('should parse userArgs and give sortOptions with input validity', () => {
-    const actualValue = parse(['./file']);
-    assert.deepStrictEqual(actualValue, {
-      filePath: './file',
-      areOptionsInvalid: false
-    });
-  });
-
-  it('should give filePath as undefined if no filePath is given', function() {
-    const actualValue = parse([]);
-    assert.deepStrictEqual(actualValue, {
-      filePath: undefined,
-      areOptionsInvalid: false
-    });
-  });
-});
+const { loadStreamLines } = require('../src/inputReader');
 
 describe('#loadStreamLines()', function() {
   this.afterEach(() => sinon.restore());

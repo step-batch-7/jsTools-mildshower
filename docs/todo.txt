@@ -47,5 +47,5 @@ v-0.3
 	--Implement sortLines() separate function to sort lines considering reverse option also. //it will check if reverse option is there or not
 	--link new sortLines() function to performSort so that previous versions and current version work fine
 	--implement a reducer function to reduce through all command lines args
-	--improve the naming of sortTools lib
+	--done--(separated functions into two modules. inputReader and parser)improve the naming of sortTools lib
 	--add appTests to test features of the current version

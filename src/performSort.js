@@ -1,4 +1,5 @@
-const { parse, loadStreamLines } = require('./sortingTools');
+const { loadStreamLines } = require('./inputReader');
+const { parse } = require('./parser');
 
 const performSort = function(userArgs, createFileStream, stdin, onCompletion) {
   const { areOptionsInvalid, filePath } = parse(userArgs);
