@@ -45,4 +45,11 @@ describe('#parse()', function() {
       reverse: true
     });
   });
+	
+  it('should state invalid args if invalid option is present', function() {
+    const actualValue = parse(['-z', '-r', './file']);
+    assert.deepStrictEqual(actualValue, {
+      areOptionsInvalid: true
+    });
+  });
 });

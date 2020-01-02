@@ -2,11 +2,25 @@ const optionNames = {
   '-r': 'reverse'
 };
 
+const isValidOption = function(option) {
+  const options = Object.keys(optionNames);
+  return options.includes(option);
+};
+
 const actOnEachArg = function(preProperties, currArg) {
-  if(!/^-/.test(currArg)){
+  if(preProperties.areOptionsInvalid) {
+    return preProperties;
+  }
+	
+  if(!currArg.startsWith('-')){
     preProperties.filePath = currArg;
     return preProperties;
   }
+	
+  if(!isValidOption(currArg)) {
+    return {areOptionsInvalid: true};
+  }
+	
   const optionName = optionNames[currArg];
   preProperties[optionName] = true;
   return preProperties;
