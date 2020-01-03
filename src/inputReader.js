@@ -7,13 +7,15 @@ const loadStreamLines = function(inputStream, onCompletion) {
   let content = '';
   inputStream.on('error', error => {
     const errorMsg = errorMsgs[error.code];
-    onCompletion({ errorMsg });
+    onCompletion({errorMsg});
   });
-  inputStream.on('data', data => {content += data;});
+  inputStream.on('data', data => {
+    content += data;
+  });
   inputStream.on('end', () => {
     const lines = content.replace(/\n$/, '').split('\n');
-    onCompletion({ lines });
+    onCompletion({lines});
   });
 };
 
-module.exports = { loadStreamLines };
+module.exports = {loadStreamLines};

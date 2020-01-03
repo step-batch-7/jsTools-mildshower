@@ -1,4 +1,4 @@
-const { createReadStream } = require('fs');
+const {createReadStream} = require('fs');
 const {stdout, stderr} = process;
 const performSort = require('./src/performSort');
 

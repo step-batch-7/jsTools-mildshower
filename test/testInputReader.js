@@ -1,5 +1,5 @@
 const sinon = require('sinon');
-const { loadStreamLines } = require('../src/inputReader');
+const {loadStreamLines} = require('../src/inputReader');
 
 describe('#loadStreamLines()', function() {
   this.afterEach(() => sinon.restore());
@@ -11,7 +11,7 @@ describe('#loadStreamLines()', function() {
     interface.on.withArgs('data').yield('line1\n');
     interface.on.withArgs('data').yield('line3');
     interface.on.withArgs('end').yield();
-    sinon.assert.calledOnceWithExactly(callBack, { lines: ['line1', 'line3'] });
+    sinon.assert.calledOnceWithExactly(callBack, {lines: ['line1', 'line3']});
     done();
   });
 	
@@ -21,7 +21,7 @@ describe('#loadStreamLines()', function() {
     const callBack = sinon.spy();
     loadStreamLines(interface, callBack);
     interface.on.withArgs('error').yield({code: 'EACCES'});
-    const expected =  { errorMsg: 'sort: Permission denied' };
+    const expected = {errorMsg: 'sort: Permission denied'};
     sinon.assert.calledOnceWithExactly(callBack, expected);
     done();
   });

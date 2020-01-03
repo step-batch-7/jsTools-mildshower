@@ -25,7 +25,7 @@ describe('#performSort()', function() {
       const createReadStream = sinon.stub();
       createReadStream.withArgs('./file').returns(fileStream);
       performSort(['./file'], createReadStream, null, callBack);
-      fileStream.on.withArgs('error').yield({ code: 'ENOENT' });
+      fileStream.on.withArgs('error').yield({code: 'ENOENT'});
       const expected = {errorMsg: 'sort: No such file or directory'};
       sinon.assert.calledWithExactly(callBack, expected);
     });  
@@ -37,7 +37,7 @@ describe('#performSort()', function() {
       const createReadStream = sinon.stub();
       createReadStream.withArgs('./file').returns(fileStream);
       performSort(['./file'], createReadStream, null, callBack);
-      fileStream.on.withArgs('error').yield({ code: 'EACCES' });
+      fileStream.on.withArgs('error').yield({code: 'EACCES'});
       const expected = {errorMsg: 'sort: Permission denied'};
       sinon.assert.calledWithExactly(callBack, expected);
     });  
@@ -49,7 +49,7 @@ describe('#performSort()', function() {
       const createReadStream = sinon.stub();
       createReadStream.withArgs('./file').returns(fileStream);
       performSort(['./file'], createReadStream, null, callBack);
-      fileStream.on.withArgs('error').yield({ code: 'EISDIR' });
+      fileStream.on.withArgs('error').yield({code: 'EISDIR'});
       const expected = {errorMsg: 'sort: Is a directory'};
       sinon.assert.calledWithExactly(callBack, expected);
     });  

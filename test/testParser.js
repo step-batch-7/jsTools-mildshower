@@ -1,4 +1,4 @@
-const { assert } = require('chai');
+const {assert} = require('chai');
 const {parse} = require('../src/parser');
 
 describe('#parse()', function() {
@@ -41,6 +41,6 @@ describe('#parse()', function() {
 	
   it('should recognize invalid option if given', function() {
     const actualValue = parse(['-z', '-r', './file']);
-    assert.include(actualValue, { invalidOption: 'z' });
+    assert.include(actualValue, {invalidOption: 'z'});
   });
 });
