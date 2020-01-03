@@ -6,7 +6,8 @@ const selectOption = function(arg) {
   const optionName = optionNames[arg];
   let option = {name: optionName, value: true};
   if(optionName === undefined) {
-    option = {name: 'invalidOption', value: arg[1]};
+    const [, givenOption] = arg.match(/.(.*)/);
+    option = {name: 'invalidOption', value: givenOption};
   }
   return option;
 };
