@@ -39,7 +39,7 @@ describe('#parse()', function() {
     });
   });
 	
-  it('should state invalid option if given', function() {
+  it('should recognize invalid option if given', function() {
     const actualValue = parse(['-z', '-r', './file']);
     assert.include(actualValue, { invalidOption: 'z' });
   });
