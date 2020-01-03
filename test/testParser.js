@@ -6,16 +6,12 @@ describe('#parse()', function() {
     const actualValue = parse(['./file']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
-      areOptionsInvalid: false,
-      reverse: false
     });
   });
 
   it('should give filePath as undefined if no filePath is given', function() {
     const actualValue = parse([]);
     assert.deepStrictEqual(actualValue, {
-      areOptionsInvalid: false,
-      reverse: false
     });
   });
 	
@@ -23,7 +19,6 @@ describe('#parse()', function() {
     const actualValue = parse(['-r', './file']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
-      areOptionsInvalid: false,
       reverse: true
     });
   });
@@ -32,7 +27,6 @@ describe('#parse()', function() {
     const actualValue = parse(['./file', '-r']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
-      areOptionsInvalid: false,
       reverse: true
     });
   });
@@ -41,13 +35,12 @@ describe('#parse()', function() {
     const actualValue = parse(['-r', './file', '-r', '-r', '-r']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
-      areOptionsInvalid: false,
       reverse: true
     });
   });
 	
-  it('should state invalid args if invalid option is present', function() {
+  it('should state invalid option if given', function() {
     const actualValue = parse(['-z', '-r', './file']);
-    assert.include(actualValue, { areOptionsInvalid: true });
+    assert.include(actualValue, { invalidOption: 'z' });
   });
 });

@@ -2,8 +2,8 @@ const { loadStreamLines } = require('./inputReader');
 const { parse } = require('./parser');
 
 const performSort = function(userArgs, createFileStream, stdin, onCompletion) {
-  const { areOptionsInvalid, filePath } = parse(userArgs);
-  if (areOptionsInvalid) {return;}
+  const { invalidOption, filePath } = parse(userArgs);
+  if (invalidOption) {return;}
 
   const inputStream = filePath ? createFileStream(filePath) : stdin;
 
