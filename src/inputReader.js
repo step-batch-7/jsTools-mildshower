@@ -1,19 +1,24 @@
+const LineRecorder = require('./lineRecorder.js');
+
 const errorMsgs = {
   EACCES: 'sort: Permission denied',
   ENOENT: 'sort: No such file or directory',
   EISDIR: 'sort: Is a directory'
 };
 const loadStreamLines = function(inputStream, onCompletion) {
-  let content = '';
+  const recorder = new LineRecorder;
+
   inputStream.on('error', error => {
     const errorMsg = errorMsgs[error.code];
     onCompletion({errorMsg});
   });
+
   inputStream.on('data', data => {
-    content += data;
+    recorder.record(data);
   });
+
   inputStream.on('end', () => {
-    const lines = content.replace(/\n$/, '').split('\n');
+    const lines = recorder.lines;
     onCompletion({lines});
   });
 };
