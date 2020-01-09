@@ -1,5 +1,5 @@
 const {loadStreamLines} = require('./inputReader');
-const {parse} = require('./parser');
+const Parser = require('./parser');
 
 const sortLines = function(lines, options) {
   const sortedLines = lines.sort();
@@ -8,7 +8,9 @@ const sortLines = function(lines, options) {
 };
 
 const performSort = function(userArgs, createFileStream, stdin, onCompletion) {
-  const sortOptions = parse(userArgs);
+  const sortOptionSet = {'-r': 'reverse'};
+  const parser = new Parser(sortOptionSet);
+  const sortOptions = parser.parse(userArgs);
   const {invalidOption, filePath} = sortOptions;
   if (invalidOption) {
     return onCompletion({errorMsg: `sort: invalid option -- ${invalidOption}`});

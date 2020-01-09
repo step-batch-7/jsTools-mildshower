@@ -13,14 +13,8 @@ const loadStreamLines = function(inputStream, onCompletion) {
     onCompletion({errorMsg});
   });
 
-  inputStream.on('data', data => {
-    recorder.record(data);
-  });
-
-  inputStream.on('end', () => {
-    const lines = recorder.lines;
-    onCompletion({lines});
-  });
+  inputStream.on('data', data => recorder.record(data));
+  inputStream.on('end', () => onCompletion({lines: recorder.lines}));
 };
 
 module.exports = {loadStreamLines};

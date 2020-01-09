@@ -1,9 +1,5 @@
-const optionNames = {
-  '-r': 'reverse'
-};
-
-const selectOption = function(arg) {
-  const optionName = optionNames[arg];
+const selectOption = function(arg, optionSet) {
+  const optionName = optionSet[arg];
   let option = {name: optionName, value: true};
   if(optionName === undefined) {
     const [, givenOption] = arg.match(/.(.*)/);
@@ -12,23 +8,29 @@ const selectOption = function(arg) {
   return option;
 };
 
-const actOnEachArg = function(preProperties, currArg) {
-  if(preProperties.invalidOption) {
-    return preProperties;
+const readArg = function(optionSet, recordedOptions, currArg) {
+  if(recordedOptions.invalidOption) {
+    return recordedOptions;
   }
 	
   if(!currArg.startsWith('-')){
-    preProperties.filePath = currArg;
-    return preProperties;
+    recordedOptions.filePath = currArg;
+    return recordedOptions;
   }
 	
-  const option = selectOption(currArg);
-  preProperties[option.name] = option.value;
-  return preProperties;
+  const option = selectOption(currArg, optionSet);
+  recordedOptions[option.name] = option.value;
+  return recordedOptions;
 };
 
-const parse = function(userArgs) {
-  return userArgs.reduce(actOnEachArg, {});
-};
+class Parser {
+  constructor(optionSet) {
+    this.optionSet = optionSet;
+  }
 
-exports.parse = parse;
+  parse(userArgs) {
+    return userArgs.reduce(readArg.bind(null, this.optionSet), {});
+  }
+}
+
+module.exports = Parser;

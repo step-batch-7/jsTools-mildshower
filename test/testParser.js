@@ -1,22 +1,25 @@
 const {assert} = require('chai');
-const {parse} = require('../src/parser');
+const Parser = require('../src/parser');
 
 describe('#parse()', function() {
+  const sortOptionSet = {'-r': 'reverse'};
+  const parser = new Parser(sortOptionSet);
+
   it('should parse userArgs and give sortOptions with input validity', () => {
-    const actualValue = parse(['./file']);
+    const actualValue = parser.parse(['./file']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
     });
   });
 
   it('should give filePath as undefined if no filePath is given', function() {
-    const actualValue = parse([]);
+    const actualValue = parser.parse([]);
     assert.deepStrictEqual(actualValue, {
     });
   });
 	
   it('should recognize -r option if given before fileName', function() {
-    const actualValue = parse(['-r', './file']);
+    const actualValue = parser.parse(['-r', './file']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
       reverse: true
@@ -24,7 +27,7 @@ describe('#parse()', function() {
   });
 	
   it('should recognize -r option if given after fileName', function() {
-    const actualValue = parse(['./file', '-r']);
+    const actualValue = parser.parse(['./file', '-r']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
       reverse: true
@@ -32,7 +35,7 @@ describe('#parse()', function() {
   });
 	
   it('should recognize -r option if -r is repeated', function() {
-    const actualValue = parse(['-r', './file', '-r', '-r', '-r']);
+    const actualValue = parser.parse(['-r', './file', '-r', '-r', '-r']);
     assert.deepStrictEqual(actualValue, {
       filePath: './file',
       reverse: true
@@ -40,7 +43,7 @@ describe('#parse()', function() {
   });
 	
   it('should recognize invalid option if given', function() {
-    const actualValue = parse(['-z', '-r', './file']);
+    const actualValue = parser.parse(['-z', '-r', './file']);
     assert.include(actualValue, {invalidOption: 'z'});
   });
 });
